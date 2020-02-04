@@ -5,6 +5,7 @@ import com.urise.webapp.model.Resume;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 /**
  * Array based storage for Resumes
@@ -13,11 +14,8 @@ public class ArrayStorage {
     private Resume[] storage = new Resume[10000];
     private int countOfResumes = 0;
 
-
     public void clear() {
-        for (int i = 0; i < countOfResumes; i++) {
-            storage[i] = null;
-        }
+        Arrays.fill(storage, null);
         countOfResumes = 0;
     }
 
@@ -46,12 +44,13 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-          if (countOfResumes != storage.length) {
-              if (!isPresent(r.getUuid())){
-                  System.out.println("Однако мы его сейчас сохраним");
-            storage[countOfResumes++] = r;}
+        if (countOfResumes != storage.length) {
+            if (!isPresent(r.getUuid())) {
+                System.out.println("Однако мы его сейчас сохраним");
+                storage[countOfResumes++] = r;
+            }
         } else
-        System.out.println("Хранилище полностью заполнено");
+            System.out.println("Хранилище полностью заполнено");
     }
 
     public Resume get(String uuid) {
@@ -79,12 +78,9 @@ public class ArrayStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
+
     public Resume[] getAll() {
-        Resume[] resumes = new Resume[countOfResumes];
-        for (int i = 0; i < countOfResumes; i++) {
-            resumes[i] = storage[i];
-        }
-        return resumes;
+        return Arrays.copyOf(storage, countOfResumes);
     }
 
     public int size() {
