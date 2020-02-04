@@ -26,7 +26,7 @@ public class ArrayStorage {
             if (uuid.equals(storage[i].getUuid()))
                 return true;
         }
-        System.out.println("RESUME NOT EXIST");
+        System.out.println("РЕЗЮМЕ ЕЩЕ НЕ СУЩЕСТВУЕТ");
         return false;
     }
 
@@ -47,7 +47,9 @@ public class ArrayStorage {
 
     public void save(Resume r) {
           if (countOfResumes != storage.length) {
-            storage[countOfResumes++] = r;
+              if (!isPresent(r.getUuid())){
+                  System.out.println("Однако мы его сейчас сохраним");
+            storage[countOfResumes++] = r;}
         } else
         System.out.println("Хранилище полностью заполнено");
     }
