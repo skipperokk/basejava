@@ -46,7 +46,10 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
+          if (countOfResumes != storage.length) {
             storage[countOfResumes++] = r;
+        } else
+        System.out.println("Хранилище полностью заполнено");
     }
 
     public Resume get(String uuid) {
