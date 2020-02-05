@@ -10,6 +10,7 @@ import java.util.Arrays;
 public class ArrayStorage {
     private Resume[] storage = new Resume[10_000];
     private int countOfResumes = 0;
+    private int indexOfResume = 0;
 
     public void clear() {
         for (int i = 0; i < countOfResumes; i++) {
@@ -20,28 +21,26 @@ public class ArrayStorage {
 
     public boolean isPresent(String uuid) {
         for (int i = 0; i < countOfResumes; i++) {
-            if (uuid.equals(storage[i].getUuid()))
+            if (uuid.equals(storage[i].getUuid())) {
+                indexOfResume = i;
                 return true;
+            }
         }
-        System.out.println("uuid ЕЩЕ НЕ СУЩЕСТВУЕТ");
+        System.out.println(uuid + " ЕЩЕ НЕ СУЩЕСТВУЕТ");
         return false;
     }
 
     public void update(Resume resume) {
         if (isPresent(resume.getUuid())) {
-            for (int i = 0; i < countOfResumes; i++) {
-                if (storage[i].getUuid().equals(resume.getUuid())) {
-                    storage[i] = resume;
-                }
-            }
+            storage[indexOfResume] = resume;
         }
     }
 
-    public void save(Resume r) {
+    public void save(Resume resume) {
         if (countOfResumes != storage.length) {
-            if (!isPresent(r.getUuid())) {
-                System.out.println("Однако мы его сейчас сохраним");
-                storage[countOfResumes++] = r;
+            if (!isPresent(resume.getUuid())) {
+                System.out.println("Однако сейчас сохраним " + resume.getUuid());
+                storage[countOfResumes++] = resume;
             }
         } else
             System.out.println("Хранилище полностью заполнено");
@@ -49,23 +48,16 @@ public class ArrayStorage {
 
     public Resume get(String uuid) {
         if (isPresent(uuid)) {
-            for (int i = 0; i < countOfResumes; i++) {
-                if (uuid.equals(storage[i].getUuid()))
-                    return storage[i];
-            }
+            return storage[indexOfResume];
         }
         return null;
     }
 
     public void delete(String uuid) {
         if (isPresent(uuid)) {
-            for (int i = 0; i < countOfResumes; i++) {
-                if (uuid.equals(storage[i].getUuid())) {
-                    storage[i] = storage[countOfResumes - 1];
-                    storage[countOfResumes - 1] = null;
-                    countOfResumes--;
-                }
-            }
+            storage[indexOfResume] = storage[countOfResumes - 1];
+            storage[countOfResumes - 1] = null;
+            countOfResumes--;
         }
     }
 
