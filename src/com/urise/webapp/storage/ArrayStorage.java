@@ -12,7 +12,7 @@ public class ArrayStorage {
     private int countOfResumes = 0;
 
     public void clear() {
-        Arrays.fill(storage, 0, countOfResumes-1, null);
+        Arrays.fill(storage, 0, countOfResumes, null);
         countOfResumes = 0;
     }
 
@@ -22,35 +22,45 @@ public class ArrayStorage {
                 return i;
             }
         }
-        System.out.println(uuid + " ЕЩЕ НЕ СУЩЕСТВУЕТ");
         return -1;
     }
 
     public void update(Resume resume) {
         int index = isPresent(resume.getUuid());
-        storage[index] = resume;
+        if (index == -1) {
+            System.out.println(resume.getUuid() + " еще не существует!");
+        } else
+            storage[index] = resume;
     }
 
     public void save(Resume resume) {
-        if (countOfResumes != storage.length) {
-            if (isPresent(resume.getUuid()) == -1) {
-                System.out.println("Однако сейчас сохраним " + resume.getUuid());
-                storage[countOfResumes++] = resume;
-            }
-        } else
-            System.out.println("Хранилище полностью заполнено");
+        if (isPresent(resume.getUuid()) != -1) {
+            System.out.println(resume.getUuid() + " уже существует!");
+        } else if (countOfResumes >= storage.length) {
+            System.out.println("Хранилище заполнено");
+        } else {
+            storage[countOfResumes++] = resume;
+        }
     }
 
     public Resume get(String uuid) {
         int index = isPresent(uuid);
+        if (index == -1) {
+            System.out.println(uuid + " еще не существует!");
+            return null;
+        }
         return storage[index];
     }
 
     public void delete(String uuid) {
         int index = isPresent(uuid);
-        storage[index] = storage[countOfResumes - 1];
-        storage[countOfResumes - 1] = null;
-        countOfResumes--;
+        if (index == -1)
+            System.out.println(uuid + " еще не существует!");
+        else {
+            storage[index] = storage[countOfResumes - 1];
+            storage[countOfResumes - 1] = null;
+            countOfResumes--;
+        }
     }
 
     /**
