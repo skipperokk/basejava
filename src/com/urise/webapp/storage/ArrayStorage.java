@@ -10,35 +10,30 @@ import java.util.Arrays;
 public class ArrayStorage {
     private Resume[] storage = new Resume[10_000];
     private int countOfResumes = 0;
-    private int indexOfResume = 0;
 
     public void clear() {
-        for (int i = 0; i < countOfResumes; i++) {
-            Arrays.fill(storage, null);
-        }
+        Arrays.fill(storage, 0, countOfResumes-1, null);
         countOfResumes = 0;
     }
 
-    public boolean isPresent(String uuid) {
+    public int isPresent(String uuid) {
         for (int i = 0; i < countOfResumes; i++) {
             if (uuid.equals(storage[i].getUuid())) {
-                indexOfResume = i;
-                return true;
+                return i;
             }
         }
         System.out.println(uuid + " ЕЩЕ НЕ СУЩЕСТВУЕТ");
-        return false;
+        return -1;
     }
 
     public void update(Resume resume) {
-        if (isPresent(resume.getUuid())) {
-            storage[indexOfResume] = resume;
-        }
+        int index = isPresent(resume.getUuid());
+        storage[index] = resume;
     }
 
     public void save(Resume resume) {
         if (countOfResumes != storage.length) {
-            if (!isPresent(resume.getUuid())) {
+            if (isPresent(resume.getUuid()) == -1) {
                 System.out.println("Однако сейчас сохраним " + resume.getUuid());
                 storage[countOfResumes++] = resume;
             }
@@ -47,18 +42,15 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        if (isPresent(uuid)) {
-            return storage[indexOfResume];
-        }
-        return null;
+        int index = isPresent(uuid);
+        return storage[index];
     }
 
     public void delete(String uuid) {
-        if (isPresent(uuid)) {
-            storage[indexOfResume] = storage[countOfResumes - 1];
-            storage[countOfResumes - 1] = null;
-            countOfResumes--;
-        }
+        int index = isPresent(uuid);
+        storage[index] = storage[countOfResumes - 1];
+        storage[countOfResumes - 1] = null;
+        countOfResumes--;
     }
 
     /**
