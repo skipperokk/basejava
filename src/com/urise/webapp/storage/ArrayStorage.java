@@ -16,7 +16,7 @@ public class ArrayStorage {
         countOfResumes = 0;
     }
 
-    public int isPresent(String uuid) {
+    public int resumeIndex(String uuid) {
         for (int i = 0; i < countOfResumes; i++) {
             if (uuid.equals(storage[i].getUuid())) {
                 return i;
@@ -26,7 +26,7 @@ public class ArrayStorage {
     }
 
     public void update(Resume resume) {
-        int index = isPresent(resume.getUuid());
+        int index = resumeIndex(resume.getUuid());
         if (index == -1) {
             System.out.println(resume.getUuid() + " еще не существует!");
         } else
@@ -34,7 +34,7 @@ public class ArrayStorage {
     }
 
     public void save(Resume resume) {
-        if (isPresent(resume.getUuid()) != -1) {
+        if (resumeIndex(resume.getUuid()) != -1) {
             System.out.println(resume.getUuid() + " уже существует!");
         } else if (countOfResumes >= storage.length) {
             System.out.println("Хранилище заполнено");
@@ -44,7 +44,7 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        int index = isPresent(uuid);
+        int index = resumeIndex(uuid);
         if (index == -1) {
             System.out.println(uuid + " еще не существует!");
             return null;
@@ -53,7 +53,7 @@ public class ArrayStorage {
     }
 
     public void delete(String uuid) {
-        int index = isPresent(uuid);
+        int index = resumeIndex(uuid);
         if (index == -1)
             System.out.println(uuid + " еще не существует!");
         else {
