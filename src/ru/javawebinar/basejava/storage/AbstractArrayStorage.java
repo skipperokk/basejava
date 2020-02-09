@@ -1,15 +1,21 @@
-package com.urise.webapp.storage;
+package ru.javawebinar.basejava.storage;
 
-import com.urise.webapp.model.Resume;
+import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
 
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage {
-    private Resume[] storage = new Resume[10_000];
-    private int countOfResumes = 0;
+public abstract class AbstractArrayStorage implements Storage {
+    protected static final int STORAGE_LIMIT = 10_000;
+
+    protected Resume[] storage = new Resume[STORAGE_LIMIT];
+    protected int countOfResumes = 0;
+
+    public int size() {
+        return countOfResumes;
+    }
 
     public void clear() {
         Arrays.fill(storage, 0, countOfResumes, null);
@@ -25,22 +31,15 @@ public class ArrayStorage {
     }
 
     public void save(Resume resume) {
-        if (getIndex(resume.getUuid()) != -1) {
+        int index = getIndex(resume.getUuid());
+        if (index >= 0) {
             System.out.println("Резюме " + resume.getUuid() + " уже существует!");
-        } else if (countOfResumes >= storage.length) {
+        } else if (countOfResumes == STORAGE_LIMIT) {
             System.out.println("Хранилище заполнено");
         } else {
-            storage[countOfResumes++] = resume;
+            insertElement(resume, index);
+            countOfResumes++;
         }
-    }
-
-    public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index == -1) {
-            System.out.println("Резюме " + uuid + " не существует!");
-            return null;
-        }
-        return storage[index];
     }
 
     public void delete(String uuid) {
@@ -48,30 +47,28 @@ public class ArrayStorage {
         if (index == -1) {
             System.out.println("Резюме " + uuid + " не существует!");
         } else {
-            storage[index] = storage[countOfResumes - 1];
+            deleteElement(index);
             storage[countOfResumes - 1] = null;
             countOfResumes--;
         }
     }
 
-    private int getIndex(String uuid) {
-        for (int i = 0; i < countOfResumes; i++) {
-            if (uuid.equals(storage[i].getUuid())) {
-                return i;
-            }
+    public Resume get(String uuid) {
+        int index = getIndex(uuid);
+        if (index <= -1) {
+            System.out.println("Резюме " + uuid + " не существует!");
+            return null;
         }
-        return -1;
+        return storage[index];
     }
-
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
 
     public Resume[] getAll() {
         return Arrays.copyOf(storage, countOfResumes);
     }
 
-    public int size() {
-        return countOfResumes;
-    }
+    protected abstract void insertElement(Resume resume, int index);
+
+    protected abstract void deleteElement(int index);
+
+    protected abstract int getIndex(String uuid);
 }
