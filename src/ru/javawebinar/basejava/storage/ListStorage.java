@@ -19,9 +19,9 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected int getIndexList(String uuid) {
-        for (Resume r : listStorage) {
-            if (uuid.compareTo(r.getUuid()) == 0)
-                return listStorage.indexOf(r);
+        for (Resume resume : listStorage) {
+            if (uuid.compareTo(resume.getUuid()) == 0)
+                return listStorage.indexOf(resume);
         }
         return -1;
     }

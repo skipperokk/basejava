@@ -36,10 +36,10 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public void save(Resume resume) {
         int index = getIndexList(resume.getUuid());
-        listStorage.add(resume);
         if (index >= 0) {
             throw new ExistStorageException(resume.getUuid());
         }
+        listStorage.add(resume);
     }
 
     @Override
