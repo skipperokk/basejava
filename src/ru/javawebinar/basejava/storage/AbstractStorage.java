@@ -6,49 +6,49 @@ import ru.javawebinar.basejava.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
 
-    protected abstract void saveElement(Resume resume, int key);
+    protected abstract void updateElement(Resume resume, Object key);
 
-    protected abstract void updateElement(Resume resume, int key);
+    protected abstract void saveElement(Resume resume, Object key);
 
-    protected abstract Resume getElement(int key);
+    protected abstract Resume getElement(Object key);
 
-    protected abstract void deleteElement(int key);
+    protected abstract void deleteElement(Object key);
 
-    protected abstract int getKey(String uuid);
+    protected abstract Object getKey(String uuid);
 
-    protected abstract boolean isExist(int key);
+    protected abstract boolean isExist(Object key);
 
 
     public void update(Resume resume) {
-        int key = getExistedKey(resume.getUuid());
+        Object key = getExistedKey(resume.getUuid());
         updateElement(resume, key);
     }
 
     public void save(Resume resume) {
-        int key = getNotExistedKey(resume.getUuid());
+        Object key = getNotExistedKey(resume.getUuid());
         saveElement(resume, key);
     }
 
     public void delete(String uuid) {
-        int key = getExistedKey(uuid);
+        Object key = getExistedKey(uuid);
         deleteElement(key);
     }
 
     public Resume get(String uuid) {
-        int key = getExistedKey(uuid);
+        Object key = getExistedKey(uuid);
         return getElement(key);
     }
 
-    private int getExistedKey(String uuid){
-        int key = getKey(uuid);
+    private Object getExistedKey(String uuid) {
+        Object key = getKey(uuid);
         if (!isExist(key)) {
             throw new NotExistStorageException(uuid);
         }
         return key;
     }
 
-    private int getNotExistedKey(String uuid){
-        int key = getKey(uuid);
+    private Object getNotExistedKey(String uuid) {
+        Object key = getKey(uuid);
         if (isExist(key)) {
             throw new ExistStorageException(uuid);
         }
