@@ -8,11 +8,11 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void saveElement(Resume resume, int key);
 
-    protected abstract void updateElement(Resume resume, int index);
+    protected abstract void updateElement(Resume resume, int key);
 
-    protected abstract Resume getElement(int index);
+    protected abstract Resume getElement(int key);
 
-    protected abstract void deleteElement(int index);
+    protected abstract void deleteElement(int key);
 
     protected abstract int getKey(String uuid);
 
