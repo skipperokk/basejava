@@ -4,68 +4,52 @@ import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.List;
-
 public abstract class AbstractStorage implements Storage {
 
-    protected List<Resume> listStorage;
+    protected abstract void saveElement(Resume resume);
 
-    public AbstractStorage(List<Resume> listStorage) {
-        this.listStorage = listStorage;
-    }
+    protected abstract void updateElement(Resume resume, int index);
 
-    @Override
-    public int size() {
-        return listStorage.size();
-    }
+    protected abstract Resume getElement(int index);
 
-    @Override
-    public void clear() {
-        listStorage.clear();
-    }
+    protected abstract void deleteElement(int index);
 
-    @Override
+    protected abstract int getKey(String uuid);
+
+
     public void update(Resume resume) {
-        int index = getIndexList(resume.getUuid());
-        if (index == -1) {
-            throw new NotExistStorageException(resume.getUuid());
-        }
-        listStorage.set(index, resume);
+        int key = getNotExistStorageException(resume.getUuid());
+        updateElement(resume, key);
     }
 
-    @Override
     public void save(Resume resume) {
-        int index = getIndexList(resume.getUuid());
-        if (index >= 0) {
-            throw new ExistStorageException(resume.getUuid());
-        }
-        listStorage.add(resume);
+        int key = getExistStorageException(resume.getUuid());
+        saveElement(resume);
     }
 
-    @Override
-    public Resume get(String uuid) {
-        int index = getIndexList(uuid);
-        if (index == -1) {
-            throw new NotExistStorageException(uuid);
-        }
-        return listStorage.get(index);
-    }
-
-    @Override
     public void delete(String uuid) {
-        int index = getIndexList(uuid);
-        if (index == -1) {
+        int key = getNotExistStorageException(uuid);
+        deleteElement(key);
+    }
+
+    public Resume get(String uuid) {
+        int key = getNotExistStorageException(uuid);
+        return getElement(key);
+    }
+
+    private int getNotExistStorageException(String uuid){
+        int key = getKey(uuid);
+        if (key == -1) {
             throw new NotExistStorageException(uuid);
         }
-        listStorage.remove(index);
+        return key;
     }
 
-    @Override
-    public Resume[] getAll() {
-        Resume[] array = new Resume[listStorage.size()];
-        listStorage.toArray(array);
-        return array;
+    private int getExistStorageException(String uuid){
+        int key = getKey(uuid);
+        if (key != -1) {
+            throw new ExistStorageException(uuid);
+        }
+        return key;
     }
-
-    protected abstract int getIndexList(String uuid);
 }
