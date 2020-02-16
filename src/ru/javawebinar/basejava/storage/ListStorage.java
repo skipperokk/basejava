@@ -17,7 +17,7 @@ public class ListStorage extends AbstractStorage {
     private List<Resume> listStorage = new ArrayList<>();
 
     @Override
-    protected void saveElement(Resume resume) {
+    protected void saveElement(Resume resume, int key) {
         listStorage.add(resume);
     }
 
@@ -43,6 +43,10 @@ public class ListStorage extends AbstractStorage {
                 return listStorage.indexOf(resume);
         }
         return -1;
+    }
+
+    protected boolean existKey(int key){
+        return key != -1;
     }
 
     @Override
