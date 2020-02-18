@@ -37,7 +37,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getKey(String uuid) {
+    protected Integer getKey(String uuid) {
         for (int i = 0; i < listStorage.size(); i++)
             if (listStorage.get(i).getUuid().equals(uuid)) {
                 return i;
@@ -57,8 +57,7 @@ public class ListStorage extends AbstractStorage {
     @Override
     public Resume[] getAll() {
         Resume[] resumes = new Resume[listStorage.size()];
-        listStorage.toArray(resumes);
-        return resumes;
+        return listStorage.toArray(resumes);
     }
 
     @Override
