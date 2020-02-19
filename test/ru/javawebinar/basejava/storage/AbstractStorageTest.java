@@ -99,5 +99,4 @@ public abstract class AbstractStorageTest {
         assertEquals(3, resumes.length);
         assertArrayEquals(resumes, storage.getAll());
     }
-
 }

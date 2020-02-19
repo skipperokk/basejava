@@ -9,38 +9,33 @@ public class MapStorage extends AbstractStorage {
     private Map<String, Resume> mapStorage = new HashMap<>();
 
     @Override
-    protected void updateElement(Resume resume, Object key) {
+    protected void doUpdate(Resume resume, Object key) {
         mapStorage.replace(key.toString(), resume);
     }
 
     @Override
-    protected void saveElement(Resume resume, Object key) {
+    protected void doSave(Resume resume, Object key) {
         mapStorage.put(key.toString(), resume);
     }
 
     @Override
-    protected Resume getElement(Object key) {
-        return mapStorage.get(key.toString());
-    }
-
-    @Override
-    protected void deleteElement(Object key) {
+    protected void doDelete(Object key) {
         mapStorage.remove(key.toString());
     }
 
     @Override
-    protected String getKey(String uuid) {
+    protected Resume doGet(Object key) {
+        return mapStorage.get(key.toString());
+    }
+
+    @Override
+    protected String getSearchKey(String uuid) {
         return uuid;
     }
 
     @Override
     protected boolean isExist(Object key) {
         return mapStorage.containsKey(key.toString());
-    }
-
-    @Override
-    public void clear() {
-        mapStorage.clear();
     }
 
     @Override
@@ -52,5 +47,10 @@ public class MapStorage extends AbstractStorage {
     @Override
     public int size() {
         return mapStorage.size();
+    }
+
+    @Override
+    public void clear() {
+        mapStorage.clear();
     }
 }
