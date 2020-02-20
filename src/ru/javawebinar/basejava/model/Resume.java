@@ -2,18 +2,14 @@ package ru.javawebinar.basejava.model;
 
 import java.util.UUID;
 
-public class Resume {
+public class Resume implements Comparable<Resume> {
 
     private final String uuid;
 
     private String fullName;
 
-    public Resume() {
-        this(UUID.randomUUID().toString());
-    }
-
-    public Resume(String uuid) {
-        this.uuid = uuid;
+    public Resume(String fullName) {
+        this(UUID.randomUUID().toString(), fullName);
     }
 
     public Resume(String uuid, String fullName) {
@@ -32,16 +28,27 @@ public class Resume {
 
         Resume resume = (Resume) o;
 
-        return uuid.equals(resume.uuid);
+        if (uuid != null ? !uuid.equals(resume.uuid) : resume.uuid != null) return false;
+        return fullName != null ? fullName.equals(resume.fullName) : resume.fullName == null;
     }
 
     @Override
     public int hashCode() {
-        return uuid.hashCode();
+        int result = uuid != null ? uuid.hashCode() : 0;
+        result = 31 * result + (fullName != null ? fullName.hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
         return uuid;
+    }
+
+    @Override
+    public int compareTo(Resume o) {
+        if (fullName.equals(o.fullName)) {
+            return uuid.compareTo(o.uuid);
+        }
+        return fullName.compareTo(o.fullName);
     }
 }

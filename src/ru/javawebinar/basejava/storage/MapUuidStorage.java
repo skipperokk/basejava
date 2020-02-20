@@ -4,7 +4,7 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.*;
 
-public class MapStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage {
 
     private Map<String, Resume> mapStorage = new HashMap<>();
 
@@ -39,7 +39,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
+    public List<Resume> doCopyArray() {
         return new ArrayList<>(mapStorage.values());
     }
 
