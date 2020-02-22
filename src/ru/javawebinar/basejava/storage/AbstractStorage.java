@@ -21,7 +21,7 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract boolean isExist(Object searchKey);
 
-    protected abstract List<Resume> doCopyArray();
+    protected abstract List<Resume> doCopyAll();
 
 
     public void update(Resume resume) {
@@ -41,7 +41,7 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        List<Resume> list = doCopyArray();
+        List<Resume> list = doCopyAll();
         Collections.sort(list);
         return list;
     }
