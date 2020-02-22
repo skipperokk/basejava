@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Array based storage for Resumes
  */
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     protected abstract void insertElement(Resume resume, int index);
 
@@ -23,35 +23,35 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected int countOfResumes = 0;
 
     @Override
-    protected void doUpdate(Resume resume, Object index) {
-        storage[(Integer) index] = resume;
+    protected void doUpdate(Resume resume, Integer index) {
+        storage[index] = resume;
     }
 
     @Override
-    protected void doSave(Resume resume, Object index) {
+    protected void doSave(Resume resume, Integer index) {
         if (countOfResumes == STORAGE_LIMIT) {
             throw new StorageException("Хранилище заполнено", resume.getUuid());
         } else {
-            insertElement(resume, (Integer) index);
+            insertElement(resume, index);
             countOfResumes++;
         }
     }
 
     @Override
-    protected void doDelete(Object index) {
-        deleteElement((Integer) index);
+    protected void doDelete(Integer index) {
+        deleteElement(index);
         storage[countOfResumes - 1] = null;
         countOfResumes--;
     }
 
     @Override
-    protected Resume doGet(Object index) {
-        return storage[(Integer) index];
+    protected Resume doGet(Integer index) {
+        return storage[index];
     }
 
     @Override
-    protected boolean isExist(Object index) {
-        return (Integer) index >= 0;
+    protected boolean isExist(Integer index) {
+        return index >= 0;
     }
 
     protected List<Resume> doCopyAll() {
