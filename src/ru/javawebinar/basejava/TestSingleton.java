@@ -2,6 +2,8 @@ package ru.javawebinar.basejava;
 
 //Ленивый - когда инициализируется в геттере, не работает для многопоточности
 
+import ru.javawebinar.basejava.model.SectionType;
+
 public class TestSingleton {
     private static TestSingleton instance;
 
@@ -16,6 +18,13 @@ public class TestSingleton {
     }
 
     public static void main(String[] args) {
-        System.out.println(getInstance().toString());
+        getInstance().toString();
+       // Singleton instance = Singleton.valueOf("INSTANCE");
+        //System.out.println(instance.name());
+        for (SectionType type : SectionType.values()){
+            System.out.println(type.getTitle());}
+    }
+    public enum Singleton{
+        INSTANCE
     }
 }
