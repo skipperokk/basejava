@@ -1,9 +1,6 @@
 package ru.javawebinar.basejava.model;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class Resume implements Comparable<Resume> {
 
@@ -11,8 +8,8 @@ public class Resume implements Comparable<Resume> {
 
     private final String fullName;
 
-    private Map<SectionType, Section> sectionTypeMap = new HashMap<>();
-    private Map<ContactsType, String> contactsTypeMap = new HashMap<>();
+    private final Map<SectionType, Section> sectionTypeMap = new HashMap<>();
+    private final Map<ContactsType, String> contactsTypeMap = new HashMap<>();
 
     public String getContacts(ContactsType type) {
         return contactsTypeMap.get(type);
@@ -20,6 +17,14 @@ public class Resume implements Comparable<Resume> {
 
     public Section getSection(SectionType type) {
         return sectionTypeMap.get(type);
+    }
+
+    public void addSection(SectionType sectionType, Section section) {
+        sectionTypeMap.put(sectionType, section);
+    }
+
+    public void addContact(ContactsType contactsType, String text) {
+        contactsTypeMap.put(contactsType, text);
     }
 
     public Resume(String fullName) {

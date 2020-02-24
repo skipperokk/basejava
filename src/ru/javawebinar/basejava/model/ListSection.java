@@ -3,8 +3,9 @@ package ru.javawebinar.basejava.model;
 import java.util.List;
 import java.util.Objects;
 
-public class ListSection extends Section{
-    private List<TextSection> listText;
+public class ListSection extends Section {
+
+    private final List<TextSection> listText;
 
     public ListSection(List<TextSection> listText) {
         this.listText = listText;
@@ -31,6 +32,6 @@ public class ListSection extends Section{
 
     @Override
     public String toString() {
-        return "\n" + listText;
+        return "List: " + listText.toString();
     }
 }

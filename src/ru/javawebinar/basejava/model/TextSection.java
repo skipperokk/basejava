@@ -1,10 +1,16 @@
 package ru.javawebinar.basejava.model;
 
+import java.util.Objects;
+
 public class TextSection extends Section {
 
-    private String text;
+    private final String text;
 
-    public String getText() {
+    public TextSection(String text) {
+        this.text = text;
+    }
+
+    public String getText(String text) {
         return text;
     }
 
@@ -15,18 +21,16 @@ public class TextSection extends Section {
 
         TextSection that = (TextSection) o;
 
-        return text.equals(that.text);
+        return Objects.equals(text, that.text);
     }
 
     @Override
     public int hashCode() {
-        return text.hashCode();
+        return text != null ? text.hashCode() : 0;
     }
 
     @Override
     public String toString() {
-        return "TextSection{" +
-                "text='" + text + '\'' +
-                '}';
+        return text;
     }
 }

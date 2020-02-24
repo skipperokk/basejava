@@ -1,8 +1,10 @@
 package ru.javawebinar.basejava.model;
 
+import java.util.Objects;
+
 public class HyperText {
-    private String text;
-    private String link;
+    private final String text;
+    private final String link;
 
     public HyperText(String text, String link) {
         this.text = text;
@@ -22,24 +24,24 @@ public class HyperText {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        HyperText that = (HyperText) o;
+        HyperText hyperText = (HyperText) o;
 
-        if (!text.equals(that.text)) return false;
-        return link.equals(that.link);
+        if (!text.equals(hyperText.text)) return false;
+        return Objects.equals(link, hyperText.link);
     }
 
     @Override
     public int hashCode() {
         int result = text.hashCode();
-        result = 31 * result + link.hashCode();
+        result = 31 * result + (link != null ? link.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "HyperText{" +
+        return "HyperText(" +
                 "text='" + text + '\'' +
                 ", link='" + link + '\'' +
-                '}';
+                ')';
     }
 }

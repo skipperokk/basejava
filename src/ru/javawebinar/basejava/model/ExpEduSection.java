@@ -3,8 +3,8 @@ package ru.javawebinar.basejava.model;
 import java.util.List;
 import java.util.Objects;
 
-public class ExpEduSection extends Section{
-    List<ExpEdu> expEduList;
+public class ExpEduSection extends Section {
+    private final List<ExpEdu> expEduList;
 
     public ExpEduSection(List<ExpEdu> expEduList) {
         this.expEduList = expEduList;
@@ -31,8 +31,6 @@ public class ExpEduSection extends Section{
 
     @Override
     public String toString() {
-        return "ExpEduSection{" +
-                "expEduBlockList=" + expEduList +
-                '}';
+        return expEduList.toString();
     }
 }
