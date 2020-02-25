@@ -7,11 +7,13 @@ public class HyperText {
     private final String link;
 
     public HyperText(String text, String link) {
+        Objects.requireNonNull(text, "text must not be null");
+        Objects.requireNonNull(link, "text must not be null");
         this.text = text;
         this.link = link;
     }
 
-    public String getHyperText() {
+    public String getText() {
         return text;
     }
 

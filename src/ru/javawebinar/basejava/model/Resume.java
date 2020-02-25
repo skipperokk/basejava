@@ -8,24 +8,8 @@ public class Resume implements Comparable<Resume> {
 
     private final String fullName;
 
-    private final Map<SectionType, Section> sectionTypeMap = new HashMap<>();
-    private final Map<ContactsType, String> contactsTypeMap = new HashMap<>();
-
-    public String getContacts(ContactsType type) {
-        return contactsTypeMap.get(type);
-    }
-
-    public Section getSection(SectionType type) {
-        return sectionTypeMap.get(type);
-    }
-
-    public void addSection(SectionType sectionType, Section section) {
-        sectionTypeMap.put(sectionType, section);
-    }
-
-    public void addContact(ContactsType contactsType, String text) {
-        contactsTypeMap.put(contactsType, text);
-    }
+    private final Map<SectionType, AbstractSection> sectionTypeMap = new EnumMap<>(SectionType.class);
+    private final Map<ContactsType, String> contactsTypeMap = new EnumMap<>(ContactsType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -37,6 +21,22 @@ public class Resume implements Comparable<Resume> {
         Objects.requireNonNull(fullName, "fullName must not be null");
         this.uuid = uuid;
         this.fullName = fullName;
+    }
+
+    public String getContacts(ContactsType type) {
+        return contactsTypeMap.get(type);
+    }
+
+    public void addSection(SectionType sectionType, AbstractSection section) {
+        sectionTypeMap.put(sectionType, section);
+    }
+
+    public AbstractSection getSection(SectionType type) {
+        return sectionTypeMap.get(type);
+    }
+
+    public void addContact(ContactsType contactsType, String text) {
+        contactsTypeMap.put(contactsType, text);
     }
 
     public String getUuid() {
@@ -51,13 +51,17 @@ public class Resume implements Comparable<Resume> {
         Resume resume = (Resume) o;
 
         if (!uuid.equals(resume.uuid)) return false;
-        return fullName.equals(resume.fullName);
+        if (!fullName.equals(resume.fullName)) return false;
+        if (!sectionTypeMap.equals(resume.sectionTypeMap)) return false;
+        return contactsTypeMap.equals(resume.contactsTypeMap);
     }
 
     @Override
     public int hashCode() {
         int result = uuid.hashCode();
         result = 31 * result + fullName.hashCode();
+        result = 31 * result + sectionTypeMap.hashCode();
+        result = 31 * result + contactsTypeMap.hashCode();
         return result;
     }
 
