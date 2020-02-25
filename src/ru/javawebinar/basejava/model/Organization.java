@@ -14,9 +14,7 @@ public class Organization {
         Objects.requireNonNull(startDate, "start date must not be null");
         Objects.requireNonNull(finishDate, "finish date must not be null");
         Objects.requireNonNull(title, "title must not be null");
-        Objects.requireNonNull(description, "description must not be null");
         Objects.requireNonNull(text, "text must not be null");
-        Objects.requireNonNull(link, "link must not be null");
         this.startDate = startDate;
         this.finishDate = finishDate;
         this.title = title;
@@ -34,7 +32,7 @@ public class Organization {
         if (!startDate.equals(that.startDate)) return false;
         if (!finishDate.equals(that.finishDate)) return false;
         if (!title.equals(that.title)) return false;
-        if (!description.equals(that.description)) return false;
+        if (!Objects.equals(description, that.description)) return false;
         return home.equals(that.home);
     }
 
@@ -43,7 +41,7 @@ public class Organization {
         int result = startDate.hashCode();
         result = 31 * result + finishDate.hashCode();
         result = 31 * result + title.hashCode();
-        result = 31 * result + description.hashCode();
+        result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + home.hashCode();
         return result;
     }
