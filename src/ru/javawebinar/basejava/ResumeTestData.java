@@ -61,18 +61,18 @@ public class ResumeTestData {
                 new Organization(YearMonth.of(1984, 9), YearMonth.of(1987, 6), "Закончил с отличием", "", "Заочная физико-техническая школа при МФТИ", "http://www.school.mipt.ru/")
         )));
 
-        resume.addContact(ContactsType.TELEPHONE, "+79969745519");
-        resume.addContact(ContactsType.SKYPE, new HyperText("grigory.kislin", "skype:grigory.kislin").getText());
-        resume.addContact(ContactsType.MAIL, new HyperText("gkislin@yandex.ru", "mailto:gkislin@yandex.ru").getText());
-        resume.addContact(ContactsType.LINKEDIN, new HyperText("Профиль LinkedIn", "https://www.linkedin.com/in/gkislin").getText());
-        resume.addContact(ContactsType.GITHUB, new HyperText("Профиль GitHub", "https://github.com/gkislin").getText());
-        resume.addContact(ContactsType.STACKOVERFLOW, new HyperText("Профиль StackOverflow", "https://stackoverflow.com/users/548473").getText());
-        resume.addContact(ContactsType.HOME, new HyperText("Домашняя страница", "http://gkislin.ru/").getText());
+        resume.addContact(ContactType.PHONE, "+79969745519");
+        resume.addContact(ContactType.SKYPE, new Link("grigory.kislin", "skype:grigory.kislin").getName());
+        resume.addContact(ContactType.MAIL, new Link("gkislin@yandex.ru", "mailto:gkislin@yandex.ru").getName());
+        resume.addContact(ContactType.LINKEDIN, new Link("Профиль LinkedIn", "https://www.linkedin.com/in/gkislin").getName());
+        resume.addContact(ContactType.GITHUB, new Link("Профиль GitHub", "https://github.com/gkislin").getName());
+        resume.addContact(ContactType.STACKOVERFLOW, new Link("Профиль StackOverflow", "https://stackoverflow.com/users/548473").getName());
+        resume.addContact(ContactType.HOME_PAGE, new Link("Домашняя страница", "http://gkislin.ru/").getName());
 
         System.out.println(resume.toString());
         System.out.println("=================");
-        for (ContactsType contactsType : ContactsType.values()) {
-            System.out.println(resume.getContacts(contactsType));
+        for (ContactType contactType : ContactType.values()) {
+            System.out.println(resume.getContacts(contactType));
         }
         System.out.println("=================");
         for (SectionType sectionType : SectionType.values()) {

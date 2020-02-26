@@ -8,8 +8,8 @@ public class Resume implements Comparable<Resume> {
 
     private final String fullName;
 
-    private final Map<SectionType, AbstractSection> sectionTypeMap = new EnumMap<>(SectionType.class);
-    private final Map<ContactsType, String> contactsTypeMap = new EnumMap<>(ContactsType.class);
+    private final Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
+    private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -23,20 +23,20 @@ public class Resume implements Comparable<Resume> {
         this.fullName = fullName;
     }
 
-    public String getContacts(ContactsType type) {
-        return contactsTypeMap.get(type);
+    public String getContacts(ContactType type) {
+        return contacts.get(type);
     }
 
     public void addSection(SectionType sectionType, AbstractSection section) {
-        sectionTypeMap.put(sectionType, section);
+        sections.put(sectionType, section);
     }
 
     public AbstractSection getSection(SectionType type) {
-        return sectionTypeMap.get(type);
+        return sections.get(type);
     }
 
-    public void addContact(ContactsType contactsType, String text) {
-        contactsTypeMap.put(contactsType, text);
+    public void addContact(ContactType contactType, String text) {
+        contacts.put(contactType, text);
     }
 
     public String getUuid() {
@@ -52,16 +52,16 @@ public class Resume implements Comparable<Resume> {
 
         if (!uuid.equals(resume.uuid)) return false;
         if (!fullName.equals(resume.fullName)) return false;
-        if (!sectionTypeMap.equals(resume.sectionTypeMap)) return false;
-        return contactsTypeMap.equals(resume.contactsTypeMap);
+        if (!sections.equals(resume.sections)) return false;
+        return contacts.equals(resume.contacts);
     }
 
     @Override
     public int hashCode() {
         int result = uuid.hashCode();
         result = 31 * result + fullName.hashCode();
-        result = 31 * result + sectionTypeMap.hashCode();
-        result = 31 * result + contactsTypeMap.hashCode();
+        result = 31 * result + sections.hashCode();
+        result = 31 * result + contacts.hashCode();
         return result;
     }
 

@@ -5,21 +5,21 @@ import java.util.Objects;
 
 public class Organization {
     private final YearMonth startDate;
-    private final YearMonth finishDate;
+    private final YearMonth endDate;
     private final String title;
     private final String description;
-    private final HyperText home;
 
-    public Organization(YearMonth startDate, YearMonth finishDate, String title, String description, String text, String link) {
-        Objects.requireNonNull(startDate, "start date must not be null");
-        Objects.requireNonNull(finishDate, "finish date must not be null");
-        Objects.requireNonNull(title, "title must not be null");
-        Objects.requireNonNull(text, "text must not be null");
+    private final Link homePage;
+
+    public Organization(YearMonth startDate, YearMonth endDate, String title, String description, String name, String url) {
+        Objects.requireNonNull(startDate, "Start date must not be null");
+        Objects.requireNonNull(endDate, "End date must not be null");
+        Objects.requireNonNull(title, "Title must not be null");
         this.startDate = startDate;
-        this.finishDate = finishDate;
+        this.endDate = endDate;
         this.title = title;
         this.description = description;
-        this.home = new HyperText(text, link);
+        this.homePage = new Link(name, url);
     }
 
     @Override
@@ -30,25 +30,25 @@ public class Organization {
         Organization that = (Organization) o;
 
         if (!startDate.equals(that.startDate)) return false;
-        if (!finishDate.equals(that.finishDate)) return false;
+        if (!endDate.equals(that.endDate)) return false;
         if (!title.equals(that.title)) return false;
         if (!Objects.equals(description, that.description)) return false;
-        return home.equals(that.home);
+        return homePage.equals(that.homePage);
     }
 
     @Override
     public int hashCode() {
         int result = startDate.hashCode();
-        result = 31 * result + finishDate.hashCode();
+        result = 31 * result + endDate.hashCode();
         result = 31 * result + title.hashCode();
         result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + home.hashCode();
+        result = 31 * result + homePage.hashCode();
         return result;
     }
 
     @Override
     public String toString() {
         return startDate + " - "
-                + finishDate + ", " + title + ", " + description + ", " + home;
+                + endDate + ", " + title + ", " + description + ", " + homePage;
     }
 }
