@@ -1,11 +1,10 @@
 package ru.javawebinar.basejava.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Organization {
     private final Link homePage;
-    private List<ListDescriptions> descriptionList = new ArrayList<>();
+    private List<ListDescriptions> descriptionList;
 
     public Organization(String name, String url, List<ListDescriptions> descriptionList) {
         this.homePage = new Link(name, url);
