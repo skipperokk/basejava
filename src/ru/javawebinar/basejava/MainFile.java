@@ -3,8 +3,6 @@ package ru.javawebinar.basejava;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class MainFile {
@@ -31,38 +29,26 @@ public class MainFile {
             throw new RuntimeException(e);
         }
 
-        //HomeWork Les.8 part 2
+                                              //HomeWork Les.8 part 2
 
-        final String path = "./";
-        List<String> res = new ArrayList<>();
-
-        try {
-            directory(path, res);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        for (String s : res)
-            System.out.println(s);
+        final String path = "./src/";
+        structure(path);
     }
 
-    private static void directory(String path, List<String> res) {
-
+    private static void structure(String path) {
         File dir = new File(path);
         File[] list;
         try {
-            //Не проходит по скрытым каталогам
-            if (!dir.isHidden()) {
-                list = dir.listFiles();
-                for (File file : Objects.requireNonNull(list)) {
-                    if (file.isFile()) {
-                        res.add(file.getName());
-                    } else {
-                        directory(file.getCanonicalPath(), res);
-                    }
+            list = dir.listFiles();
+            for (File file : Objects.requireNonNull(list)) {
+                if (file.isFile()) {
+                    System.out.println("File - " + file.getName());
+                } else if (file.isDirectory()) {
+                    System.out.println("Directory - " + file.getName());
+                    structure(file.getCanonicalPath());
                 }
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
