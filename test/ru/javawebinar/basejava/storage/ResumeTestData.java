@@ -1,4 +1,4 @@
-package ru.javawebinar.basejava;
+package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.*;
 
@@ -6,9 +6,9 @@ import java.time.YearMonth;
 import java.util.Arrays;
 
 public class ResumeTestData {
-    public static void main(String[] args) {
 
-        Resume resume = new Resume("uuid1", "Григорий Кислин");
+       public Resume createResume(String uuid, String fullName) {
+        Resume resume = new Resume(uuid, fullName);
 
         resume.addSection(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
         resume.addSection(SectionType.PERSONAL, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры"));
@@ -46,7 +46,7 @@ public class ResumeTestData {
                                 new ListDescriptions(YearMonth.of(2013, 10), YearMonth.now(), "Автор проекта", "Создание, организация и проведение Java онлайн проектов и стажировок"))),
                 new Organization("Wrike", "https://www.wrike.com/",
                         Arrays.asList(
-                                new ListDescriptions(YearMonth.of(2014, 10), YearMonth.of(2016, 01), "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."))),
+                                new ListDescriptions(YearMonth.of(2014, 10), YearMonth.of(2016, 1), "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."))),
                 new Organization("RIT Center", "",
                         Arrays.asList(
                                 new ListDescriptions(YearMonth.of(2012, 4), YearMonth.of(2014, 10), "Java архитектор", "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), сервисов общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online редактирование из браузера документов MS Office. Maven + plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python"))),
@@ -108,6 +108,8 @@ public class ResumeTestData {
         for (SectionType sectionType : SectionType.values()) {
             System.out.println(resume.getSection(sectionType));
         }
-
+        return resume;
     }
+
 }
+

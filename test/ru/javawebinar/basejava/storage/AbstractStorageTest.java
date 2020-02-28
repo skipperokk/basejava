@@ -16,17 +16,23 @@ public abstract class AbstractStorageTest {
 
     protected Storage storage;
 
+    ResumeTestData resumeTestData = new ResumeTestData();
+
     private final String UUID_1 = "uuid1";
-    private final Resume RESUME_1 = new Resume(UUID_1, "name1");
+    private final Resume RESUME_1 = resumeTestData.createResume(UUID_1,"name1");
+    //private final Resume RESUME_1 = new Resume(UUID_1, "name1");
 
     private final String UUID_2 = "uuid2";
-    private final Resume RESUME_2 = new Resume(UUID_2, "name2");
+    private final Resume RESUME_2 = resumeTestData.createResume(UUID_2, "name2");
+   // private final Resume RESUME_2 = new Resume(UUID_2, "name2");
 
     private final String UUID_3 = "uuid3";
-    private final Resume RESUME_3 = new Resume(UUID_3, "name3");
+    private final Resume RESUME_3 = resumeTestData.createResume(UUID_3,"name3");
+   // private final Resume RESUME_3 = new Resume(UUID_3, "name3");
 
     private final String UUID_4 = "uuid4";
-    private final Resume RESUME_4 = new Resume(UUID_4, "name4");
+    private final Resume RESUME_4 = resumeTestData.createResume(UUID_4,"name4");
+   // private final Resume RESUME_4 = new Resume(UUID_4, "name4");
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
