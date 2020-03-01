@@ -3,13 +3,13 @@ package ru.javawebinar.basejava.model;
 import java.time.YearMonth;
 import java.util.Objects;
 
-public class ListDescriptions {
+public class Position {
     private final YearMonth startDate;
     private final YearMonth endDate;
     private final String title;
     private final String description;
 
-    public ListDescriptions(YearMonth startDate, YearMonth endDate, String title, String description) {
+    public Position(YearMonth startDate, YearMonth endDate, String title, String description) {
         Objects.requireNonNull(startDate, "Start date must not be null");
         Objects.requireNonNull(endDate, "End date must not be null");
         Objects.requireNonNull(title, "Title must not be null");
@@ -24,7 +24,7 @@ public class ListDescriptions {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ListDescriptions that = (ListDescriptions) o;
+        Position that = (Position) o;
 
         if (!startDate.equals(that.startDate)) return false;
         if (!endDate.equals(that.endDate)) return false;

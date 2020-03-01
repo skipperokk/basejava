@@ -4,9 +4,9 @@ import java.util.List;
 
 public class Organization {
     private final Link homePage;
-    private List<ListDescriptions> descriptionList;
+    private List<Position> descriptionList;
 
-    public Organization(String name, String url, List<ListDescriptions> descriptionList) {
+    public Organization(String name, String url, List<Position> descriptionList) {
         this.homePage = new Link(name, url);
         this.descriptionList = descriptionList;
     }
@@ -15,13 +15,13 @@ public class Organization {
         return homePage;
     }
 
-    public List<ListDescriptions> getDescriptionList() {
+    public List<Position> getDescriptionList() {
         return descriptionList;
     }
 
     @Override
     public String toString() {
         return "Organization{" +
-                "homePage=" + homePage + "Description=" + descriptionList.toString() + "}";
+                "homePage=" + homePage + "Description=" + descriptionList + "}";
     }
 }
