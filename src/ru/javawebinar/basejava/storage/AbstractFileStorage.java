@@ -10,8 +10,8 @@ import java.util.Objects;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
-    protected abstract void doWrite(Resume resume, OutputStream file) throws IOException;
-    protected abstract Resume doRead(InputStream file) throws IOException;
+    protected abstract void doWrite(Resume resume, OutputStream os) throws IOException;
+    protected abstract Resume doRead(InputStream is) throws IOException;
 
     private File directory;
 
@@ -20,7 +20,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
         }
-        if (!directory.canRead() || directory.canWrite()) {
+        if (!directory.canRead() || !directory.canWrite()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not readable/writeable");
         }
         this.directory = directory;

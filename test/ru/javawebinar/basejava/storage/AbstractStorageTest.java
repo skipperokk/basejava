@@ -6,13 +6,14 @@ import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 public abstract class AbstractStorageTest {
+    protected static final File STORAGE_DIR = new File(".\\storage");
 
     protected Storage storage;
 
@@ -64,7 +65,7 @@ public abstract class AbstractStorageTest {
     public void update() {
         Resume someResume = new Resume(UUID_1, "new_name1");
         storage.update(someResume);
-        assertSame(someResume, storage.get(UUID_1));
+        assertEquals(someResume, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
