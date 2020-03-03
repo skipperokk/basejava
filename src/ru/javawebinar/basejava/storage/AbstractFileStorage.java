@@ -12,7 +12,7 @@ import java.util.Objects;
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     protected abstract void doWrite(Resume resume, File file) throws IOException;
-    protected abstract void doGetFile(File file) throws IOException;
+    protected abstract Resume doRead(File file) throws IOException;
 
     private File directory;
 
@@ -31,8 +31,8 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected void doUpdate(Resume resume, File file) {
         try {
             doWrite(resume, file);
-        } catch (Exception e) {
-            throw new StorageException("File do not update", resume.getUuid(), e);
+        } catch (IOException e) {
+            throw new StorageException("File write error", resume.getUuid(), e);
         }
     }
 
@@ -43,32 +43,32 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
                 doWrite(resume, file);
             }
         } catch (IOException e) {
-            throw new StorageException("IO Error", file.getName(), e);
+            throw new StorageException("Couldn't create file" + file.getAbsolutePath(), file.getName(), e);
         }
+        doUpdate(resume, file);
     }
 
     @Override
     protected void doDelete(File file) {
         if (!file.delete()) {
-            throw new StorageException("File do not delete", file.getName());
+            throw new StorageException("File delete error", file.getName());
         }
     }
 
     @Override
     protected Resume doGet(File file) {
         try {
-            doGetFile(file);
-        } catch (IOException e){
-            throw new StorageException("File get error", file.getName());
+            return doRead(file);
+        } catch (IOException e) {
+            throw new StorageException("File read error", file.getName(), e);
         }
-        return null;
     }
 
     @Override
     protected List<Resume> doCopyAll() {
         File[] files = directory.listFiles();
         if (files == null) {
-            throw new StorageException("Directory is empty", null);
+            throw new StorageException("Directory read error", null);
         }
         List<Resume> listResume = new ArrayList<>(files.length);
         for (File file : files) {
@@ -101,7 +101,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     public int size() {
         String[] file = directory.list();
         if (file == null) {
-            throw new StorageException("Error size", null);
+            throw new StorageException("Directory read error", null);
         }
         return file.length;
     }

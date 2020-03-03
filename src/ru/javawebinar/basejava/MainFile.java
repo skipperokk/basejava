@@ -29,13 +29,13 @@ public class MainFile {
             throw new RuntimeException(e);
         }
 
-                                              //HomeWork Les.8 part 2
+        //HomeWork Les.8 part 2
 
         final String path = "./src/";
-        structure(path);
+        printDirectoryDeeply(path);
     }
 
-    private static void structure(String path) {
+    private static void printDirectoryDeeply(String path) {
         File dir = new File(path);
         File[] list;
         try {
@@ -45,7 +45,7 @@ public class MainFile {
                     System.out.println("File - " + file.getName());
                 } else if (file.isDirectory()) {
                     System.out.println("Directory - " + file.getName());
-                    structure(file.getCanonicalPath());
+                    printDirectoryDeeply(file.getCanonicalPath());
                 }
             }
         } catch (IOException e) {
