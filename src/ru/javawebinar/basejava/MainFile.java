@@ -32,20 +32,20 @@ public class MainFile {
         //HomeWork Les.8 part 2
 
         final String path = "./src/";
-        printDirectoryDeeply(path);
+        printDirectoryDeeply(path, " ");
     }
 
-    private static void printDirectoryDeeply(String path) {
+    private static void printDirectoryDeeply(String path, String indent) {
         File dir = new File(path);
         File[] list;
         try {
             list = dir.listFiles();
             for (File file : Objects.requireNonNull(list)) {
                 if (file.isFile()) {
-                    System.out.println("File - " + file.getName());
+                    System.out.println(indent + "File: " + file.getName());
                 } else if (file.isDirectory()) {
-                    System.out.println("Directory - " + file.getName());
-                    printDirectoryDeeply(file.getCanonicalPath());
+                    System.out.println(indent + "Directory: " + file.getName());
+                    printDirectoryDeeply(file.getCanonicalPath(),indent + " ");
                 }
             }
         } catch (IOException e) {
