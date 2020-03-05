@@ -2,7 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.serializer.SerializationStrategy;
+import ru.javawebinar.basejava.storage.serializer.StreamSerializer;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -16,21 +16,22 @@ import java.util.stream.Stream;
 public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
 
-    private SerializationStrategy serializationStrategy;
+    private StreamSerializer streamSerializer;
 
-    protected PathStorage(String dir, SerializationStrategy serializationStrategy) {
+    protected PathStorage(String dir, StreamSerializer streamSerializer) {
+        this.streamSerializer = streamSerializer;
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "Directory must not be null");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + " is not directory or is not writable");
         }
-        this.serializationStrategy = serializationStrategy;
+
     }
 
     @Override
     protected void doUpdate(Resume resume, Path path) {
         try {
-            serializationStrategy.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(path)));
+            streamSerializer.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Path write error", resume.getUuid(), e);
         }
@@ -41,7 +42,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.createFile(path);
         } catch (IOException e) {
-            throw new StorageException("Couldn't create path " + path.toAbsolutePath(), path.getFileName().toString(), e);
+            throw new StorageException("Couldn't create path " + path, getFileName(path), e);
         }
         doUpdate(resume, path);
     }
@@ -51,22 +52,22 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.delete(path);
         } catch (IOException e) {
-            throw new StorageException("Path delete error", path.getFileName().toString());
+            throw new StorageException("Path delete error", getFileName(path), e);
         }
     }
 
     @Override
     protected Resume doGet(Path path) {
         try {
-            return serializationStrategy.doRead(new BufferedInputStream(Files.newInputStream(path)));
+            return streamSerializer.doRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
-            throw new StorageException("Path read error", path.getFileName().toString(), e);
+            throw new StorageException("Path read error", getFileName(path), e);
         }
     }
 
     @Override
     protected List<Resume> doCopyAll() {
-        return getFileList(directory).map(this::doGet).collect(Collectors.toList());
+        return getFilesList().map(this::doGet).collect(Collectors.toList());
     }
 
     @Override
@@ -76,24 +77,28 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected boolean isExist(Path path) {
-        return Files.exists(path);
+        return Files.isRegularFile(path);
     }
 
     @Override
     public void clear() {
-        getFileList(directory).forEach(this::doDelete);
+        getFilesList().forEach(this::doDelete);
     }
 
     @Override
     public int size() {
-        return (int) getFileList(directory).count();
+        return (int) getFilesList().count();
     }
 
-    private Stream<Path> getFileList(Path directory) {
+    private Stream<Path> getFilesList() {
         try {
             return Files.list(directory);
         } catch (IOException e) {
-            throw new StorageException("Directory read error", null);
+            throw new StorageException("Directory read error", e);
         }
+    }
+
+    private String getFileName(Path path) {
+        return path.getFileName().toString();
     }
 }

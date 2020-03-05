@@ -36,16 +36,16 @@ public class MainFile {
         printDirectoryDeeply(mainDir, " ");
     }
 
-    private static void printDirectoryDeeply(File dir, String indent) {
+    private static void printDirectoryDeeply(File mainDir, String indent) {
         File[] list;
         try {
-            list = dir.listFiles();
+            list = mainDir.listFiles();
             for (File file : Objects.requireNonNull(list)) {
                 if (file.isFile()) {
                     System.out.println(indent + "File: " + file.getName());
                 } else if (file.isDirectory()) {
                     System.out.println(indent + "Directory: " + file.getName());
-                    printDirectoryDeeply(dir.getCanonicalFile(),indent + " ");
+                    printDirectoryDeeply(mainDir.getCanonicalFile(),indent + " ");
                 }
             }
         } catch (IOException e) {
