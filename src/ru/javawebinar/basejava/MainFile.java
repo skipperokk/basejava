@@ -32,11 +32,11 @@ public class MainFile {
         //HomeWork Les.8 part 2
 
         final String path = "./src/";
-        printDirectoryDeeply(path, " ");
+        File mainDir = new File(path);
+        printDirectoryDeeply(mainDir, " ");
     }
 
-    private static void printDirectoryDeeply(String path, String indent) {
-        File dir = new File(path);
+    private static void printDirectoryDeeply(File dir, String indent) {
         File[] list;
         try {
             list = dir.listFiles();
@@ -45,7 +45,7 @@ public class MainFile {
                     System.out.println(indent + "File: " + file.getName());
                 } else if (file.isDirectory()) {
                     System.out.println(indent + "Directory: " + file.getName());
-                    printDirectoryDeeply(file.getCanonicalPath(),indent + " ");
+                    printDirectoryDeeply(dir.getCanonicalFile(),indent + " ");
                 }
             }
         } catch (IOException e) {
