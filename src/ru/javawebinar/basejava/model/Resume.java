@@ -36,16 +36,20 @@ public class Resume implements Comparable<Resume>, Serializable {
         this.fullName = fullName;
     }
 
-    public String getContacts(ContactType type) {
-        return contacts.get(type);
+    public String getFullName() {
+        return fullName;
+    }
+
+    public Map<ContactType, String> getContacts() {
+        return contacts;
     }
 
     public void addSection(SectionType sectionType, AbstractSection section) {
         sections.put(sectionType, section);
     }
 
-    public AbstractSection getSection(SectionType type) {
-        return sections.get(type);
+    public Map<SectionType, AbstractSection> getSections() {
+        return sections;
     }
 
     public void addContact(ContactType contactType, String text) {

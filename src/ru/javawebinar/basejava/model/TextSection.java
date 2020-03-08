@@ -15,8 +15,8 @@ public class TextSection extends AbstractSection {
         this.content = content;
     }
 
-    public String getContent(String text) {
-        return text;
+    public String getContent() {
+        return content;
     }
 
     @Override

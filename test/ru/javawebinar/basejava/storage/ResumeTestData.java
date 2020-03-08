@@ -4,6 +4,7 @@ import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.util.DateUtil;
 
 import java.time.Month;
+import java.util.Map;
 
 import static ru.javawebinar.basejava.util.DateUtil.of;
 
@@ -16,8 +17,7 @@ public class ResumeTestData {
 
         resume.addSection(SectionType.PERSONAL, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры"));
 
-        resume.addSection(SectionType.ACHIEVEMENT, new ListSection("\"С 2013 года: разработка проектов \\\"Разработка Web приложения\\\",\\\"Java Enterprise\\\", \\\"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\\\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.",
-                "\n С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.",
+        resume.addSection(SectionType.ACHIEVEMENT, new ListSection("\n С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.",
                 "\n Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.",
                 "\n Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера.",
                 "\n Реализация c нуля Rich Internet Application приложения на стеке технологий JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT), Commet, HTML5, Highstock для алгоритмического трейдинга.",
@@ -89,12 +89,12 @@ public class ResumeTestData {
 
         System.out.println(resume.toString());
         System.out.println("=================");
-        for (ContactType contactType : ContactType.values()) {
-            System.out.println(resume.getContacts(contactType));
+        for (Map.Entry<ContactType, String> entry: resume.getContacts().entrySet()){
+            System.out.println(entry);
         }
         System.out.println("=================");
-        for (SectionType sectionType : SectionType.values()) {
-            System.out.println(resume.getSection(sectionType));
+        for (Map.Entry<SectionType, AbstractSection> entry: resume.getSections().entrySet()){
+            System.out.println(entry);
         }
         return resume;
     }
