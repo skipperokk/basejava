@@ -132,6 +132,7 @@ public class DataStreamSerializer implements StreamSerializer {
         return list;
     }
 
+    @FunctionalInterface
     private interface CheckInterface {
         void checked() throws IOException;
     }
