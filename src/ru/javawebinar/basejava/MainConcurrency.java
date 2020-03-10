@@ -51,6 +51,7 @@ public class MainConcurrency {
             }
         });
         System.out.println(counter);
+
     }
 
     private synchronized void inc() {
