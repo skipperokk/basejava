@@ -1,9 +1,7 @@
 package ru.javawebinar.basejava;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
  /*
@@ -24,7 +22,6 @@ public class StreamHW {
         System.out.println(minValue(array));
 
         List<Integer> integers = Arrays.asList(1, 2, 3, 4, 5, 6);
-        Map<Boolean, List<Integer>> map = new HashMap<>();
         System.out.println(oddOrEven(integers));
     }
 
@@ -38,13 +35,11 @@ public class StreamHW {
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
         int sum = integers.stream()
-                .mapToInt(((p) -> p++))
+                .mapToInt(p -> p)
                 .sum();
 
-        return (integers.stream()
-                .filter(i -> {
-                    if (sum % 2 == 0) return i % 2 != 0;
-                    return i % 2 == 0;
-                }).collect(Collectors.toList()));
+        return integers.stream()
+                .filter(i -> sum%2 == i%2)
+                .collect(Collectors.toList());
     }
 }
