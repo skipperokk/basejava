@@ -120,11 +120,10 @@ public class SqlStorage implements Storage {
     }
 
     private void deleteContacts(Connection conn, Resume resume) throws SQLException {
-        sqlHelper.execute("DELETE FROM contact WHERE resume_uuid = ?", ps -> {
+        try (PreparedStatement ps = conn.prepareStatement("DELETE FROM contact WHERE resume_uuid = ?")) {
             ps.setString(1, resume.getUuid());
             ps.execute();
-            return null;
-        });
+        }
     }
 
     private void addContact(ResultSet resultSet, Resume resume) throws SQLException {
