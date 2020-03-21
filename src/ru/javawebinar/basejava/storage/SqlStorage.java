@@ -137,16 +137,15 @@ public class SqlStorage implements Storage {
             for (Map.Entry<SectionType, AbstractSection> e : resume.getSections().entrySet()) {
                 ps.setString(1, resume.getUuid());
                 ps.setString(2, e.getKey().name());
-                TextSection textSection;
+
+                TextSection textSection = new TextSection(e.getValue().toString());
+                ListSection listSection = new ListSection(e.getValue().toString());
 
                 if (e.getKey() == SectionType.OBJECTIVE) {
-                     textSection= new TextSection(e.getValue().toString());
                     ps.setString(3, textSection.toString());
                 } else if (e.getKey() == SectionType.PERSONAL) {
-                    textSection = new TextSection(e.getValue().toString());
                     ps.setString(3, textSection.toString());
                 } else if (e.getKey() == SectionType.ACHIEVEMENT) {
-                    ListSection listSection = new ListSection(e.getValue().toString());
                     ps.setString(3, listSection.toString());
                 }
                 ps.addBatch();
