@@ -13,13 +13,7 @@ public class ResumeTestData {
 
         resume.addSection(SectionType.PERSONAL, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры"));
 
-        resume.addSection(SectionType.ACHIEVEMENT, new ListSection("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.",
-                "\n Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.",
-                "\n Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера.",
-                "\n Реализация c нуля Rich Internet Application приложения на стеке технологий JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT), Commet, HTML5, Highstock для алгоритмического трейдинга.",
-                "\n Создание JavaEE фреймворка для отказоустойчивого взаимодействия слабо-связанных сервисов (SOA-base архитектура, JAX-WS, JMS, AS Glassfish). Сбор статистики сервисов и информации о состоянии через систему мониторинга Nagios. Реализация онлайн клиента для администрирования и мониторинга системы по JMX (Jython/ Django)",
-                "\n Реализация протоколов по приему платежей всех основных платежных системы России (Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа."
-        ));
+        resume.addSection(SectionType.ACHIEVEMENT, new ListSection("Achievement1", "Achievement2", "Achievement3"));
 //
 //        resume.addSection(SectionType.QUALIFICATIONS, new ListSection("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2",
 //                "\n Version control: Subversion, Git, Mercury, ClearCase, Perforce",
@@ -83,12 +77,12 @@ public class ResumeTestData {
         resume.addContact(ContactType.STACKOVERFLOW, new Link("Профиль StackOverflow", "https://stackoverflow.com/users/548473").getName());
         resume.addContact(ContactType.HOME_PAGE, new Link("Домашняя страница", "http://gkislin.ru/").getName());
 
-        for (Map.Entry<ContactType, String> e : resume.getContacts().entrySet()){
-            System.out.println(e.getKey() + " " +e.getValue());
+        for (Map.Entry<ContactType, String> e : resume.getContacts().entrySet()) {
+            System.out.println(e.getKey() + " " + e.getValue());
         }
 
-        for (Map.Entry<SectionType, AbstractSection> e : resume.getSections().entrySet()){
-            System.out.println(e.getKey() + " " +e.getValue());
+        for (Map.Entry<SectionType, AbstractSection> e : resume.getSections().entrySet()) {
+            System.out.println(e.getKey() + " " + e.getValue());
         }
 
         return resume;

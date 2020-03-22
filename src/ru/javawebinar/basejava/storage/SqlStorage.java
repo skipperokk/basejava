@@ -5,7 +5,11 @@ import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.sql.SqlHelper;
 
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SqlStorage implements Storage {
     public final SqlHelper sqlHelper;
@@ -137,17 +141,37 @@ public class SqlStorage implements Storage {
             for (Map.Entry<SectionType, AbstractSection> e : resume.getSections().entrySet()) {
                 ps.setString(1, resume.getUuid());
                 ps.setString(2, e.getKey().name());
-
-                TextSection textSection = new TextSection(e.getValue().toString());
-                ListSection listSection = new ListSection(e.getValue().toString());
-
-                if (e.getKey() == SectionType.OBJECTIVE) {
-                    ps.setString(3, textSection.toString());
-                } else if (e.getKey() == SectionType.PERSONAL) {
-                    ps.setString(3, textSection.toString());
-                } else if (e.getKey() == SectionType.ACHIEVEMENT) {
-                    ps.setString(3, listSection.toString());
+                SectionType sectionType = e.getKey();
+                switch (sectionType) {
+                    case OBJECTIVE:
+                    case PERSONAL:
+                        ps.setString(3, String.valueOf(e.getValue()));
+                        break;
+                    case ACHIEVEMENT:
+                        ListSection ls = new ListSection(String.valueOf(e.getValue()));
+                        List<String> intList = ls.getItems();
+                        String result = intList.stream()
+                                .map(String::valueOf)
+                                .collect(Collectors.joining("\n"));
+//                    ListSection section = new ListSection(String.valueOf(e.getValue()));
+//                    String text = String.join("\n", new ArrayList<CharSequence>(ls.getItems()));
+                        ps.setString(3, result);
                 }
+
+//                if (e.getKey() == SectionType.OBJECTIVE) {
+//                    ps.setString(3, String.valueOf(e.getValue()));
+//                } else if (e.getKey() == SectionType.PERSONAL) {
+//                    ps.setString(3, String.valueOf(e.getValue()));
+//                } else if (e.getKey() == SectionType.ACHIEVEMENT) {
+//                    ListSection ls = new ListSection(String.valueOf(e.getValue()));
+//                    List<String> intList = ls.getItems();
+//                    String result = intList.stream()
+//                            .map(String::valueOf)
+//                            .collect(Collectors.joining(", "));
+////                    ListSection section = new ListSection(String.valueOf(e.getValue()));
+////                    String text = String.join("\n", new ArrayList<CharSequence>(ls.getItems()));
+//                    ps.setString(3, result);
+//                }
                 ps.addBatch();
             }
             ps.executeBatch();
@@ -178,13 +202,33 @@ public class SqlStorage implements Storage {
     private void addSection(ResultSet resultSet, Resume resume) throws SQLException {
         String value = resultSet.getString("value");
         if (value != null) {
-            if (SectionType.valueOf(resultSet.getString("type")) == SectionType.OBJECTIVE) {
-                resume.addSection(SectionType.OBJECTIVE, new TextSection(value));
-            } else if (SectionType.valueOf(resultSet.getString("type")) == SectionType.PERSONAL) {
-                resume.addSection(SectionType.PERSONAL, new TextSection(value));
-            } else if (SectionType.valueOf(resultSet.getString("type")) == SectionType.ACHIEVEMENT) {
-                resume.addSection(SectionType.ACHIEVEMENT, new ListSection(value));
+            SectionType sectionType = SectionType.valueOf(resultSet.getString("type"));
+            switch (sectionType) {
+                case OBJECTIVE:
+                case PERSONAL:
+                    resume.addSection(SectionType.PERSONAL, new TextSection(value));
+                case ACHIEVEMENT:
+                    ListSection ls = new ListSection(value);
+                    List<String> intList = ls.getItems();
+                    String result = intList.stream()
+                            .map(String::valueOf)
+                            .collect(Collectors.joining("\n"));
+                    // String text = String.join("\n", new ArrayList<CharSequence>(new ListSection(value).getItems()));
+                    resume.addSection(SectionType.ACHIEVEMENT, new ListSection(result));
             }
+//            if (SectionType.valueOf(resultSet.getString("type")) == SectionType.OBJECTIVE) {
+//                resume.addSection(SectionType.OBJECTIVE, new TextSection(value));
+//            } else if (SectionType.valueOf(resultSet.getString("type")) == SectionType.PERSONAL) {
+//                resume.addSection(SectionType.PERSONAL, new TextSection(value));
+//            } else if (SectionType.valueOf(resultSet.getString("type")) == SectionType.ACHIEVEMENT) {
+//                ListSection ls = new ListSection(value);
+//                List<String> intList = ls.getItems();
+//                String result = intList.stream()
+//                        .map(String::valueOf)
+//                        .collect(Collectors.joining("\n"));
+//                // String text = String.join("\n", new ArrayList<CharSequence>(new ListSection(value).getItems()));
+//                resume.addSection(SectionType.ACHIEVEMENT, new ListSection(result));
+//            }
         }
     }
 }
