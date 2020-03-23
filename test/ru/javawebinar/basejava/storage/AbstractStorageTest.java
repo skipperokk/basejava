@@ -65,7 +65,8 @@ public abstract class AbstractStorageTest {
         someResume.addContact(ContactType.MOBILE, "8-999-999-98-98");
         someResume.addSection(SectionType.OBJECTIVE, new TextSection("some Objective"));
         someResume.addSection(SectionType.PERSONAL, new TextSection("some Personal"));
-        someResume.addSection(SectionType.ACHIEVEMENT, new ListSection("some list1", "some list2"));
+        someResume.addSection(SectionType.ACHIEVEMENT, new ListSection("some achievement1", "some achievement2"));
+        someResume.addSection(SectionType.QUALIFICATIONS, new ListSection("some qualification1", "some qualification2"));
         storage.update(someResume);
         assertEquals(someResume, storage.get(UUID_1));
     }

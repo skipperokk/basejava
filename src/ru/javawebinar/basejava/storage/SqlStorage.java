@@ -5,10 +5,7 @@ import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.sql.SqlHelper;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SqlStorage implements Storage {
     public final SqlHelper sqlHelper;
@@ -100,16 +97,30 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        return sqlHelper.execute("SELECT * FROM resume r " +
-                "LEFT JOIN contact c ON r.uuid = c.resume_uuid" +
-                " ORDER BY full_name, uuid", ps -> {
-            ResultSet rs = ps.executeQuery();
+        return sqlHelper.transactionalExecute(conn -> {
             Map<String, Resume> resultMap = new LinkedHashMap<>();
-            while (rs.next()) {
-                String uuid = rs.getString("uuid");
-                String fullName = rs.getString("full_name");
-                Resume resume = resultMap.computeIfAbsent(uuid, k -> new Resume(uuid, fullName));
-                addContact(rs, resume);
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume ORDER BY full_name, uuid")) {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    String uuid = rs.getString("uuid");
+                    resultMap.put(uuid, new Resume(uuid, rs.getString("full_name")));
+                }
+            }
+
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM contact")) {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    Resume resume = resultMap.get(rs.getString("resume_uuid"));
+                    addContact(rs, resume);
+                }
+            }
+
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM section")) {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    Resume resume = resultMap.get(rs.getString("resume_uuid"));
+                    addSection(rs, resume);
+                }
             }
             return new ArrayList<>(resultMap.values());
         });
@@ -147,7 +158,7 @@ public class SqlStorage implements Storage {
                         ps.setString(3, String.valueOf(e.getValue()));
                         break;
                     case ACHIEVEMENT:
- //                   case QUALIFICATIONS:
+                    case QUALIFICATIONS:
                         AbstractSection as = e.getValue();
                         String result = String.join("\n", ((ListSection) as).getItems());
                         ps.setString(3, result);
@@ -191,39 +202,11 @@ public class SqlStorage implements Storage {
                     resume.addSection(sectionType, new TextSection(value));
                     break;
                 case ACHIEVEMENT:
-                    String result = String.join("-", resultSet.getString(4));
-                    System.out.println(result);
-                    resume.addSection(sectionType, new ListSection(value));
+                case QUALIFICATIONS:
+                    List<String> items = Arrays.asList(value.split("\n"));
+                    resume.addSection(sectionType, new ListSection(items));
                     break;
-
-                    // AbstractSection as = e.getValue();
-                //                        String result = String.join("\n", ((ListSection) as).getItems());
-                //                        ps.setString(3, result);
-//                    String result = new ListSection(value).getItems().stream().map(String::valueOf)
-//                            .collect(Collectors.joining("\n"));
-                // String text = String.join("\n", new ArrayList<CharSequence>(new ListSection(value).getItems()));
-//                case QUALIFICATIONS:
-//
-//                    resume.addSection(SectionType.QUALIFICATIONS, new ListSection(String.join("\n", new ListSection(value).getItems())));
-//                    break;
-                // String result = String.join("\n", new ListSection(value).getItems());
-//                    String result = new ListSection(value).getItems().stream().map(String::valueOf)
-//                            .collect(Collectors.joining("\n"));
-                // String text = String.join("\n", new ArrayList<CharSequence>(new ListSection(value).getItems()));
             }
-//            if (SectionType.valueOf(resultSet.getString("type")) == SectionType.OBJECTIVE) {
-//                resume.addSection(SectionType.OBJECTIVE, new TextSection(value));
-//            } else if (SectionType.valueOf(resultSet.getString("type")) == SectionType.PERSONAL) {
-//                resume.addSection(SectionType.PERSONAL, new TextSection(value));
-//            } else if (SectionType.valueOf(resultSet.getString("type")) == SectionType.ACHIEVEMENT) {
-//                ListSection ls = new ListSection(value);
-//                List<String> intList = ls.getItems();
-//                String result = intList.stream()
-//                        .map(String::valueOf)
-//                        .collect(Collectors.joining("\n"));
-//                // String text = String.join("\n", new ArrayList<CharSequence>(new ListSection(value).getItems()));
-//                resume.addSection(SectionType.ACHIEVEMENT, new ListSection(result));
-//            }
         }
     }
 }
