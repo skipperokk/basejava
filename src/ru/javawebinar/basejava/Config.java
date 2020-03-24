@@ -13,7 +13,7 @@ public class Config {
     private final File storageDir;
     private final Storage storage;
 
-    private static final File PROPS = new File("config\\resumes.properties");
+    private static final File PROPS = new File("C:\\Users\\Admin\\Desktop\\basejava\\config\\resumes.properties");
     private static final Config INSTANCE = new Config();
 
     private Config() {
