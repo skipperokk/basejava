@@ -10,31 +10,14 @@ import ru.javawebinar.basejava.model.*;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static ru.javawebinar.basejava.ResumeTestData.*;
 
 public abstract class AbstractStorageTest {
     protected static final File STORAGE_DIR = Config.get().getStorageDir();
 
     protected Storage storage;
-
-    private static final String UUID_1 = UUID.randomUUID().toString();
-    private static final String UUID_2 = UUID.randomUUID().toString();
-    private static final String UUID_3 = UUID.randomUUID().toString();
-    private static final String UUID_4 = UUID.randomUUID().toString();
-
-    private static final Resume R1;
-    private static final Resume R2;
-    private static final Resume R3;
-    private static final Resume R4;
-
-    static {
-        R1 = ResumeTestData.createResume(UUID_1, "name1");
-        R2 = ResumeTestData.createResume(UUID_2, "name2");
-        R3 = ResumeTestData.createResume(UUID_3, "name3");
-        R4 = ResumeTestData.createResume(UUID_4, "name4");
-    }
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
