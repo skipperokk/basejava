@@ -1,5 +1,4 @@
-<%@ page import="ru.javawebinar.basejava.model.ContactType" %>
-<%@ page import="ru.javawebinar.basejava.model.SectionType" %>
+<%@ page import="ru.javawebinar.basejava.model.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -26,14 +25,29 @@
                 <dd><input type="text" name="${type.name()}" size=30 value="${resume.getContact(type)}"></dd>
             </dl>
         </c:forEach>
+        <hr>
         <h3>Секции:</h3>
         <c:forEach var="type" items="<%=SectionType.values()%>">
-        <dl>
-            <dt>${type.title}</dt>
-            <dd><input type="text" name="${type.name()}" size=30 value="${resume.getSection(type)}"></dd>
-        </dl>
+            <c:set var="section" value="${resume.getSection(type)}"/>
+            <jsp:useBean id="section" type="ru.javawebinar.basejava.model.AbstractSection"/>
+            <dl>
+                <dt>${type.title}</dt>
+                <c:choose>
+                    <c:when test="${type=='OBJECTIVE' || type=='PERSONAL'}">
+                        <dd><input type="text" name="${type}" size="50" value='<%=((TextSection)section).getContent()%>'></dd>
+                    </c:when>
+                    <c:when test="${type=='ACHIEVEMENT' || type=='QUALIFICATIONS'}">
+                        <dd><input type="text" name="${type}" size="50"
+                                   value='<%=String.join("\n", ((ListSection) section).getItems())%>'></dd>
+                    </c:when>
+                    <c:when test="${type=='EXPERIENCE' || type=='EDUCATION'}">
+                        <dd><input type="text" name="${type}" size="50"
+                                   value='${resume.getSection(type)}'></dd>
+                    </c:when>
+                </c:choose>
+            </dl>
         </c:forEach>
-        <hr>
+        <br>
         <button type="submit">Сохранить</button>
         <button onclick="window.history.back()">Отменить</button>
     </form>
