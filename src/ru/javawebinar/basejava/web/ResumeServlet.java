@@ -21,7 +21,7 @@ public class ResumeServlet extends HttpServlet {
         storage = Config.get().getStorage();
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
@@ -76,8 +76,22 @@ public class ResumeServlet extends HttpServlet {
                 response.sendRedirect("resume");
                 return;
             case "view":
+                resume = storage.get(uuid);
+                break;
             case "edit":
                 resume = storage.get(uuid);
+                for (SectionType sectionType : SectionType.values()) {
+                    AbstractSection section = resume.getSection(sectionType);
+                    if (section == null) {
+                        if (sectionType == SectionType.OBJECTIVE || sectionType == SectionType.PERSONAL) {
+                            resume.addSection(sectionType, new TextSection(""));
+                        } else if (sectionType == SectionType.ACHIEVEMENT || sectionType == SectionType.QUALIFICATIONS) {
+                            resume.addSection(sectionType, new ListSection(""));
+                        } else if (sectionType == SectionType.EXPERIENCE || sectionType == SectionType.EDUCATION) {
+                            resume.addSection(sectionType, new OrganizationSection(new Organization()));
+                        }
+                    }
+                }
                 break;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");
