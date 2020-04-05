@@ -27,6 +27,7 @@ public class ResumeServlet extends HttpServlet {
         String fullName = request.getParameter("fullName");
         Resume resume = storage.get(uuid);
         resume.setFullName(fullName);
+
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
 
@@ -75,28 +76,15 @@ public class ResumeServlet extends HttpServlet {
                 storage.delete(uuid);
                 response.sendRedirect("resume");
                 return;
+            case "add":
+                resume = new Resume("Введи имя");
+                addEmptySections(resume);
+                storage.save(resume);
+                break;
             case "view":
             case "edit":
                 resume = storage.get(uuid);
-                for (SectionType sectionType : SectionType.values()) {
-                    AbstractSection section = resume.getSection(sectionType);
-                    if (section == null) {
-                        switch (sectionType) {
-                            case OBJECTIVE:
-                            case PERSONAL:
-                                resume.addSection(sectionType, new TextSection(""));
-                                break;
-                            case ACHIEVEMENT:
-                            case QUALIFICATIONS:
-                                resume.addSection(sectionType, new ListSection(""));
-                                break;
-                            case EXPERIENCE:
-                            case EDUCATION:
-                                resume.addSection(sectionType, new OrganizationSection(new Organization()));
-                                break;
-                        }
-                    }
-                }
+                addEmptySections(resume);
                 break;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");
@@ -105,5 +93,27 @@ public class ResumeServlet extends HttpServlet {
         request.getRequestDispatcher(
                 ("view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "/WEB-INF/jsp/edit.jsp")
         ).forward(request, response);
+    }
+
+    private void addEmptySections(Resume resume) {
+        for (SectionType sectionType : SectionType.values()) {
+            AbstractSection section = resume.getSection(sectionType);
+            if (section == null) {
+                switch (sectionType) {
+                    case OBJECTIVE:
+                    case PERSONAL:
+                        resume.addSection(sectionType, new TextSection(""));
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        resume.addSection(sectionType, new ListSection(""));
+                        break;
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        resume.addSection(sectionType, new OrganizationSection(new Organization()));
+                        break;
+                }
+            }
+        }
     }
 }

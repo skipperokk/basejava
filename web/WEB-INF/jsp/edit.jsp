@@ -37,8 +37,8 @@
                         <dd><input type="text" name="${type}" size="50" value='<%=((TextSection)section).getContent()%>'></dd>
                     </c:when>
                     <c:when test="${type=='ACHIEVEMENT' || type=='QUALIFICATIONS'}">
-                        <dd><input type="text" name="${type}" size="50"
-                                   value='<%=String.join("\n", ((ListSection) section).getItems())%>'></dd>
+                        <dd><textarea name='${type}' cols=52 rows=3>
+                            <%=String.join("\n", ((ListSection) section).getItems())%></textarea></dd>
                     </c:when>
                     <c:when test="${type=='EXPERIENCE' || type=='EDUCATION'}">
                         <dd><input type="text" name="${type}" size="50"

@@ -12,6 +12,7 @@
 <jsp:include page="fragments/header.jsp"/>
 <section>
     <table border="1" cellpadding="8" cellspacing="0">
+        <a href="resume?action=add">Добавить новое резюме</a>
         <tr>
             <th>Имя</th>
             <th>Email</th>
@@ -27,6 +28,7 @@
         </c:forEach>
     </table>
 </section>
+
 <jsp:include page="fragments/footer.jsp"/>
 </body>
 </html>
