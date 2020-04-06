@@ -41,8 +41,36 @@
                             <%=String.join("\n", ((ListSection) section).getItems())%></textarea></dd>
                     </c:when>
                     <c:when test="${type=='EXPERIENCE' || type=='EDUCATION'}">
-                        <dd><input type="text" name="${type}" size="50"
-                                   value='${resume.getSection(type)}'></dd>
+                        <c:forEach var="org" items='<%=((OrganizationSection)section).getOrganizations()%>'>
+                            <dl>
+                                <dt><i>Организация:</i></dt>
+                                <dd><input type="text" name='${type}' size="50" value='${org.homePage.name}'></dd>
+                            </dl>
+                            <dl>
+                                <dt><i>Cайт организации:</i></dt>
+                                <dd><input type="text" name='${type}' size="50" value='${org.homePage.url}'></dd>
+                            </dl>
+                            <br>
+                            <c:forEach var="pos" items='${org.positions}'>
+                                <jsp:useBean id="pos" type="ru.javawebinar.basejava.model.Organization.Position"/>
+                                <dl>
+                                    <dt><i>Начало:</i></dt>
+                                    <dd><input type="text" name="${type}" size="50" value="<%=pos.getStartDate()%>"></dd>
+                                </dl>
+                                <dl>
+                                    <dt><i>Окончание:</i></dt>
+                                    <dd><input type="text" name="${type}" size="50" value="<%=pos.getEndDate()%>"></dd>
+                                </dl>
+                                <dl>
+                                    <dt><i>Позиция:</i></dt>
+                                    <dd><input type="text" name="${type}" size="50" value="${pos.title}"></dd>
+                                </dl>
+                                <dl>
+                                    <dt><i>Описание:</i></dt>
+                                    <dd><input type="text" name="${type}" size="50" value="${pos.description}"></dd>
+                                </dl>
+                            </c:forEach>
+                        </c:forEach>
                     </c:when>
                 </c:choose>
             </dl>

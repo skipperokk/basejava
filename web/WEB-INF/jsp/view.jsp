@@ -2,8 +2,6 @@
 <%@ page import="ru.javawebinar.basejava.model.TextSection" %>
 <%@ page import="ru.javawebinar.basejava.model.OrganizationSection" %>
 <%@ page import="ru.javawebinar.basejava.model.OrganizationSection" %>
-<%@ page import="ru.javawebinar.basejava.util.DateUtil" %>
-<%@ page import="static ru.javawebinar.basejava.util.DateUtil.NOW" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -24,6 +22,7 @@
                          type="java.util.Map.Entry<ru.javawebinar.basejava.model.ContactType, java.lang.String>"/>
                 <%=contactEntry.getKey().toHtml(contactEntry.getValue())%><br/>
         </c:forEach>
+
     <table>
         <c:forEach var="sectionEntry" items="${resume.sections}">
             <jsp:useBean id="sectionEntry"
@@ -33,6 +32,7 @@
             <c:set var="section" value="${sectionEntry.value}"/>
             <jsp:useBean id="section"
                          type="ru.javawebinar.basejava.model.AbstractSection"/>
+
             <tr>
                 <td><h2>${type.title}</h2></td>
             </tr>
@@ -58,11 +58,11 @@
                         <tr>
                             <td>
                                 <c:choose>
-                                    <c:when test="${not empty item.homePage.url}">
-                                        <a href="${item.homePage.url}">${item.homePage.name}</a>
+                                    <c:when test="${not empty organization.homePage.url}">
+                                        <a href="${organization.homePage.url}">${organization.homePage.name}</a>
                                     </c:when>
                                     <c:otherwise>
-                                        ${item.homePage.name}
+                                        ${organization.homePage.name}
                                     </c:otherwise>
                                 </c:choose>
                             </td>
@@ -82,7 +82,6 @@
             </c:choose>
         </c:forEach>
     </table>
-    </p>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
