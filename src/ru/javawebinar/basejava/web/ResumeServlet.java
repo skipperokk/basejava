@@ -69,9 +69,9 @@ public class ResumeServlet extends HttpServlet {
                             if (val != null && val.trim().length() != 0) {
                                 List<Organization.Position> listPos = new ArrayList<>();
                                 String[] startDates = request.getParameterValues("startDate");
-                                String[] endDates = request.getParameterValues(i + "endDate");
-                                String[] titles = request.getParameterValues(i + "title");
-                                String[] descriptions = request.getParameterValues(i + "description");
+                                String[] endDates = request.getParameterValues("endDate");
+                                String[] titles = request.getParameterValues("title");
+                                String[] descriptions = request.getParameterValues("description");
 
                                 for (int j = 0; j < titles.length; j++) {
                                     if (titles[j] != null && titles[j].trim().length() != 0) {
