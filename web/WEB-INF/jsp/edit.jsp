@@ -31,10 +31,10 @@
             <c:set var="section" value="${resume.getSection(type)}"/>
             <jsp:useBean id="section" type="ru.javawebinar.basejava.model.AbstractSection"/>
             <dl>
-                <dt>${type.title}</dt>
+                <h3><dt>${type.title}</dt></h3>
                 <c:choose>
                     <c:when test="${type=='OBJECTIVE' || type=='PERSONAL'}">
-                        <dd><input type="text" name="${type}" size="50" value='<%=((TextSection)section).getContent()%>'></dd>
+                        <dd><input type="text" name="${type}" size="50" value='<%=section%>'></dd>
                     </c:when>
                     <c:when test="${type=='ACHIEVEMENT' || type=='QUALIFICATIONS'}">
                         <dd><textarea name='${type}' cols=52 rows=3>
@@ -48,9 +48,10 @@
                             </dl>
                             <dl>
                                 <dt><i>Cайт организации:</i></dt>
-                                <dd><input type="text" name='${type}' size="50" value='${org.homePage.url}'></dd>
+                                <dd><input type="text" name='${type}url' size="50" value='${org.homePage.url}'></dd>
                             </dl>
-                            <br>
+
+                            <div style="margin: 20px">
                             <c:forEach var="pos" items='${org.positions}'>
                                 <jsp:useBean id="pos" type="ru.javawebinar.basejava.model.Organization.Position"/>
                                 <dl>
@@ -70,6 +71,7 @@
                                     <dd><input type="text" name="${type}" size="50" value="${pos.description}"></dd>
                                 </dl>
                             </c:forEach>
+                        </div>
                         </c:forEach>
                     </c:when>
                 </c:choose>

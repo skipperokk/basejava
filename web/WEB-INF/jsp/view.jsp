@@ -40,7 +40,7 @@
                 <c:when test="${type=='OBJECTIVE' || type=='PERSONAL'}">
                     <tr>
                         <td>
-                            <%=((TextSection) section).getContent()%>
+                            <%=section%>
                         </td>
                     </tr>
                 </c:when>
@@ -74,7 +74,7 @@
                                 <td>
                                   ${position.startDate} — ${position.endDate}
                                 </td>
-                                <td><i>${position.title}</i><br/>${position.description}</td>
+                                <td><i>${position.title}</i><br>${position.description}</td>
                             </tr>
                         </c:forEach>
                     </c:forEach>
