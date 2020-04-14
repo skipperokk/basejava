@@ -62,16 +62,16 @@ public class ResumeServlet extends HttpServlet {
                     case EXPERIENCE:
                     case EDUCATION:
                         List<Organization> listOrg = new ArrayList<>();
-                        String[] urls = request.getParameterValues(type.name());
+                        String[] urls = request.getParameterValues(type.name() + "url");
 
                         for (int i = 0; i < values.length; i++) {
                             String val = values[i];
                             if (val != null && val.trim().length() != 0) {
                                 List<Organization.Position> listPos = new ArrayList<>();
-                                String[] startDates = request.getParameterValues("startDate");
-                                String[] endDates = request.getParameterValues("endDate");
-                                String[] titles = request.getParameterValues("title");
-                                String[] descriptions = request.getParameterValues("description");
+                                String[] startDates = request.getParameterValues(type.name() + "startDate");
+                                String[] endDates = request.getParameterValues(type.name() + "endDate");
+                                String[] titles = request.getParameterValues(type.name() + "title");
+                                String[] descriptions = request.getParameterValues(type.name() + "description");
 
                                 for (int j = 0; j < titles.length; j++) {
                                     if (titles[j] != null && titles[j].trim().length() != 0) {
@@ -85,7 +85,7 @@ public class ResumeServlet extends HttpServlet {
                                                 descriptions[j]));
                                     }
                                 }
-                                listOrg.add(new Organization(new Link(values[i], urls[i]), listPos));
+                                listOrg.add(new Organization(new Link(val, urls[i]), listPos));
                             }
                         }
                         resume.addSection(type, new OrganizationSection(listOrg));

@@ -34,7 +34,7 @@
                 <h3><dt>${type.title}</dt></h3>
                 <c:choose>
                     <c:when test="${type=='OBJECTIVE' || type=='PERSONAL'}">
-                        <dd><input type="text" name="${type}" size="50" value='<%=section%>'></dd>
+                        <dd><input type="text" name='${type}' size="50" value='<%=((TextSection) section).getContent()%>'></dd>
                     </c:when>
                     <c:when test="${type=='ACHIEVEMENT' || type=='QUALIFICATIONS'}">
                         <dd><textarea name='${type}' cols=52 rows=3>
@@ -48,7 +48,7 @@
                             </dl>
                             <dl>
                                 <dt><i>Cайт организации:</i></dt>
-                                <dd><input type="text" name='${type}' size="50" value='${org.homePage.url}'></dd>
+                                <dd><input type="text" name='${type}url' size="50" value='${org.homePage.url}'></dd>
                             </dl>
 
                             <div style="margin: 20px">
@@ -56,19 +56,19 @@
                                 <jsp:useBean id="pos" type="ru.javawebinar.basejava.model.Organization.Position"/>
                                 <dl>
                                     <dt><i>Начало:</i></dt>
-                                    <dd><input type="text" name="${type}" size="50" value="<%=pos.getStartDate()%>"></dd>
+                                    <dd><input type="text" name='${type}startDate' size="50" value="<%=pos.getStartDate()%>"></dd>
                                 </dl>
                                 <dl>
                                     <dt><i>Окончание:</i></dt>
-                                    <dd><input type="text" name="${type}" size="50" value="<%=pos.getEndDate()%>"></dd>
+                                    <dd><input type="text" name='${type}endDate' size="50" value="<%=pos.getEndDate()%>"></dd>
                                 </dl>
                                 <dl>
                                     <dt><i>Позиция:</i></dt>
-                                    <dd><input type="text" name="${type}" size="50" value="${pos.title}"></dd>
+                                    <dd><input type="text" name='${type}title' size="50" value="${pos.title}"></dd>
                                 </dl>
                                 <dl>
                                     <dt><i>Описание:</i></dt>
-                                    <dd><input type="text" name="${type}" size="50" value="${pos.description}"></dd>
+                                    <dd><input type="text" name='${type}description' size="50" value="${pos.description}"></dd>
                                 </dl>
                             </c:forEach>
                         </div>
