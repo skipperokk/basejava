@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,8 +76,9 @@ public class ResumeServlet extends HttpServlet {
 
                                 for (int j = 0; j < titles.length; j++) {
                                     if (titles[j] != null && titles[j].trim().length() != 0) {
-                                        YearMonth start = YearMonth.parse(startDates[j]);
-                                        YearMonth end = YearMonth.parse(endDates[j]);
+                                        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                                        YearMonth start = YearMonth.parse(startDates[j], dateTimeFormatter);
+                                        YearMonth end = YearMonth.parse(endDates[j], dateTimeFormatter);
 
                                         listPos.add(new Organization.Position(
                                                 LocalDate.of(start.getYear(), start.getMonth(), 1),
@@ -159,17 +161,15 @@ public class ResumeServlet extends HttpServlet {
                     OrganizationSection organizationSection = (OrganizationSection) section;
                     List<Organization> orgIsEmpty = new ArrayList<>();
 
-                    orgIsEmpty.add(new Organization("", "", new Organization.Position()));
-
                     if (organizationSection != null) {
                         for (Organization organization : organizationSection.getOrganizations()) {
-                            List<Organization.Position> posIsEmpty = new ArrayList<>();
 
+                            List<Organization.Position> posIsEmpty = new ArrayList<>(organization.getPositions());
                             posIsEmpty.add(new Organization.Position());
-                            posIsEmpty.addAll(organization.getPositions());
                             orgIsEmpty.add(new Organization(organization.getHomePage(), posIsEmpty));
                         }
                     }
+                    orgIsEmpty.add(new Organization("", "", new Organization.Position()));
                     section = new OrganizationSection(orgIsEmpty);
                     break;
             }
