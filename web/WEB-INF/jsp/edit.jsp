@@ -1,5 +1,5 @@
 <%@ page import="ru.javawebinar.basejava.model.*" %>
-<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="ru.javawebinar.basejava.util.DateUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -27,80 +27,63 @@
             </dl>
         </c:forEach>
         <hr>
-        <h3>Секции:</h3>
         <c:forEach var="type" items="<%=SectionType.values()%>">
             <c:set var="section" value="${resume.getSection(type)}"/>
             <jsp:useBean id="section" type="ru.javawebinar.basejava.model.AbstractSection"/>
-            <dl>
-                <h3>
-                    <dt>${type.title}</dt>
-                </h3>
-                <c:choose>
+            <h2>
+                <a>${type.title}</a>
+            </h2>
+            <c:choose>
                 <c:when test="${type=='OBJECTIVE' || type=='PERSONAL'}">
-                    <dd><input type="text" name='${type}' size="50" value='<%=((TextSection) section).getContent()%>'>
-                    </dd>
+                    <input type="text" name='${type}' size=73 value='<%=((TextSection) section).getContent()%>'>
                 </c:when>
                 <c:when test="${type=='ACHIEVEMENT' || type=='QUALIFICATIONS'}">
-                <dd><textarea name='${type}' cols=52
-                              rows=3><%=String.join("\n", ((ListSection) section).getItems())%></textarea>
-                <dd>
-                    </c:when>
-                    <c:when test="${type=='EXPERIENCE' || type=='EDUCATION'}">
-                    <c:forEach var="org" items='<%=((OrganizationSection)section).getOrganizations()%>'>
-                    <dl>
-                        <dt><i>Организация:</i></dt>
-                        <dd><input type="text" name='${type}' size="50" value='${org.homePage.name}'></dd>
-                    </dl>
-                    <dl>
-                        <dt><i>Cайт организации:</i></dt>
-                        <dd><input type="text" name='${type}url' size="50" value='${org.homePage.url}'></dd>
-                    </dl>
-
-                    <div style="margin: 20px">
-                        <c:forEach var="pos" items='${org.positions}'>
-                            <jsp:useBean id="pos" type="ru.javawebinar.basejava.model.Organization.Position"/>
-                            <dl>
-                                <dt><i>Начало:</i></dt>
-                                <dd><input type="text" name='${type}startDate' size="50"
-                                           value="<%
-                                           if (pos.getStartDate()==null) {
-                                               out.print("");
-                                           } else {
-                                               out.print(pos.getStartDate());
-                                           }
-                                           %>"
-                                           placeholder="yyyy-мм-dd">
-                                </dd>
-                            </dl>
-                            <dl>
-                                <dt><i>Окончание:</i></dt>
-                                <dd><input type="text" name='${type}endDate' size="50"
-                                           value="<%
-                                    if (pos.getEndDate() == null) {
-                                        out.print("");
-                                    } else {
-                                        out.print(pos.getStartDate());
-                                    }
-                                %>"
-                                    placeholder="yyyy-мм-dd">
-                                </dd>
-                            </dl>
-                            <dl>
-                                <dt><i>Позиция:</i></dt>
-                                <dd><input type="text" name='${type}title' size="50" value="${pos.title}">
-                                </dd>
-                            </dl>
-                            <dl>
-                                <dt><i>Описание:</i></dt>
-                                <dd><input type="text" name='${type}description' size="50" value="${pos.description}">
-                                </dd>
-                            </dl>
-                        </c:forEach>
-                    </div>
+                <textarea name='${type}' cols=75
+                          rows=5><%=String.join("\n", ((ListSection) section).getItems())%></textarea>
+                </c:when>
+                <c:when test="${type=='EXPERIENCE' || type=='EDUCATION'}">
+                    <c:forEach var="org" items='<%=((OrganizationSection)section).getOrganizations()%>'
+                               varStatus="counter">
+                        <dl>
+                            <dt><i>Название организации:</i></dt>
+                            <dd><input type="text" name='${type}' size="50" value='${org.homePage.name}'></dd>
+                        </dl>
+                        <dl>
+                            <dt><i>Сайт организации:</i></dt>
+                            <dd><input type="text" name='${type}url' size="50" value='${org.homePage.url}'></dd>
+                        </dl>
+                        <div style="margin-left: 30px">
+                            <c:forEach var="pos" items='${org.positions}'>
+                                <jsp:useBean id="pos" type="ru.javawebinar.basejava.model.Organization.Position"/>
+                                <dl>
+                                    <dt><i>Дата начала:</i></dt>
+                                    <dd><input type="text" name="${type}${counter.index}startDate" size=10
+                                               value="<%=DateUtil.format(pos.getStartDate())%>" placeholder="MM/yyyy">
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt><i>Дата окончания:</i></dt>
+                                    <dd><input type="text" name="${type}${counter.index}endDate" size=10
+                                               value="<%=DateUtil.format(pos.getEndDate())%>" placeholder="MM/yyyy">
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt><i>Позиция:</i></dt>
+                                    <dd><input type="text" name='${type}${counter.index}title' size=73
+                                               value="${pos.title}">
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt><i>Описание:</i></dt>
+                                    <dd><textarea name="${type}${counter.index}description" rows=5
+                                                  cols=75>${pos.description}</textarea>
+                                    </dd>
+                                </dl>
+                            </c:forEach>
+                        </div>
                     </c:forEach>
-                    </c:when>
-                    </c:choose>
-            </dl>
+                </c:when>
+            </c:choose>
         </c:forEach>
         <br>
         <button type="submit">Сохранить</button>

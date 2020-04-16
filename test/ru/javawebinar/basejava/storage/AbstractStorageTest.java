@@ -45,11 +45,11 @@ public abstract class AbstractStorageTest {
     @Test
     public void update() {
         Resume someResume = new Resume(UUID_1, "new_name1");
-        someResume.addContact(ContactType.MOBILE, "8-999-999-98-98");
-        someResume.addSection(SectionType.OBJECTIVE, new TextSection("some Objective"));
-        someResume.addSection(SectionType.PERSONAL, new TextSection("some Personal"));
-        someResume.addSection(SectionType.ACHIEVEMENT, new ListSection("some achievement1", "some achievement2"));
-        someResume.addSection(SectionType.QUALIFICATIONS, new ListSection("some qualification1", "some qualification2"));
+        someResume.setContact(ContactType.MOBILE, "8-999-999-98-98");
+        someResume.setSection(SectionType.OBJECTIVE, new TextSection("some Objective"));
+        someResume.setSection(SectionType.PERSONAL, new TextSection("some Personal"));
+        someResume.setSection(SectionType.ACHIEVEMENT, new ListSection("some achievement1", "some achievement2"));
+        someResume.setSection(SectionType.QUALIFICATIONS, new ListSection("some qualification1", "some qualification2"));
         storage.update(someResume);
         assertEquals(someResume, storage.get(UUID_1));
     }
